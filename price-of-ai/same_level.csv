@@ -1,0 +1,10 @@
+model,date,input,output,gpqa_version,price_source
+GPT-4,2023-03-14,30,60,gpt-4-0314,OpenAI launch price
+GPT-4 Turbo,2023-11-06,10,30,gpt-4-1106-preview,OpenAI launch price
+Mistral Large,2024-02-26,8,24,mistral-large-2402,Launch price reported by TechCrunch
+Claude 3 Sonnet,2024-03-04,3,15,claude-3-sonnet-20240229,Anthropic launch price
+Claude 3 Haiku,2024-03-13,0.25,1.25,claude-3-haiku-20240307,Anthropic launch price
+GPT-4o mini,2024-07-18,0.15,0.60,gpt-4o-mini-2024-07-18,OpenAI launch price
+Gemini 1.5 Flash,2024-08-12,0.075,0.30,gemini-1.5-flash-001,Google price cut effective 2024-08-12
+Qwen Turbo,2024-11-01,0.05,0.20,qwen-turbo-2024-11-01,"Alibaba Singapore price via secondary source, price at this date not confirmed"
+Qwen3.7 Flash,2026-07-27,0.03,0.13,qwen3.7-flash,Alibaba Model Studio international price up to 32K input tokens

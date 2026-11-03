@@ -1,0 +1,2 @@
+model,host,date,input,output,gpqa_version,snapshot
+gpt-oss-20b,PrimeIntellect,2025-08-05,0.013,0.052,gpt-oss-20b_medium,2026-11-03
