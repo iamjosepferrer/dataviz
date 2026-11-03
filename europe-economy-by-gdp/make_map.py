@@ -5,7 +5,8 @@ Josep Ferrer, databites.tech
 
 Tiled map of 40 European countries built with popgrid: 1,000 squares, each one
 0.1% of their combined GDP. Square count shows GDP, color shows GDP per person,
-gold below the European average and blue above it.
+gold below the European average and blue above it. All amounts are in euros, converted
+from the IMF's U.S. dollar figures at the ECB's average exchange rate for 2025.
 
 Setup:
     pip install -r requirements.txt
@@ -17,13 +18,13 @@ Run:
     python make_map.py --out map.png --scale 1
 
 Data, committed so the published map stays reproducible:
-    data.csv       IMF GDP and population, World Bank land area, by country
+    data.csv       IMF GDP in U.S. dollars and population, World Bank land area, by country
     imf_2025.csv   IMF GDP for every country (checks the comparisons)
 
 Downloads (cached in .cache/ next to this script):
     Natural Earth boundaries, through popgrid
     npm    Playfair Display, Inter and Source Serif 4 (from Fontsource)
-    With --refresh, also the IMF and World Bank source files.
+    With --refresh, also the IMF, World Bank and ECB source files.
 
 The IMF revises its figures, so after --refresh check_claims() stops the script
 if a sentence on the graphic stops being true. Pass --skip-checks to render anyway.
@@ -54,7 +55,11 @@ URLS = {
     "imf_gdp.json": "https://www.imf.org/external/datamapper/api/v1/NGDPD?periods=2025",
     "imf_pop.json": "https://www.imf.org/external/datamapper/api/v1/LP?periods=2025",
     "wb_land.json": "https://api.worldbank.org/v2/country/all/indicator/AG.LND.TOTL.K2?format=json&per_page=400&date=2021",
+    "ecb_rate.csv": "https://data-api.ecb.europa.eu/service/data/EXR/A.USD.EUR.SP00.A?startPeriod=2025&endPeriod=2025&format=csvdata",
 }
+
+# ECB reference rate, 2025 annual average: U.S. dollars per euro.
+USD_PER_EUR = 1.129983
 
 FONTS = {
     "playfair-display": ("Playfair Display", "5.3.0", [(700, "normal"), (800, "normal"), (900, "normal")]),
@@ -133,7 +138,7 @@ def fetch_fonts():
 # DATA
 
 def load_countries(refresh=False):
-    """GDP and population (IMF, 2025) and land area (World Bank) by country."""
+    """GDP in euros and population (IMF, 2025) and land area (World Bank) by country."""
     if DATA_CSV.exists() and not refresh:
         table = pd.read_csv(DATA_CSV, keep_default_na=False, na_values=[""])
     else:
@@ -145,13 +150,16 @@ def load_countries(refresh=False):
         for code, (imf, name) in COUNTRIES.items():
             rows.append(dict(
                 code=code, name=name,
-                gdp=round(gdp[imf]["2025"] * 1e9),
+                gdp_usd=round(gdp[imf]["2025"] * 1e9),
                 pop=round(pop[imf]["2025"] * 1e6),
                 land_km2=land.get(code),  # the World Bank has no figure for Kosovo
             ))
         table = pd.DataFrame(rows)
         table.to_csv(DATA_CSV, index=False)
-    table["gdp"] = table.gdp.astype(float)
+        ecb = pd.read_csv(fetch("ecb_rate.csv")).OBS_VALUE.iloc[0]
+        if abs(ecb - USD_PER_EUR) > 1e-6:
+            raise SystemExit(f"The ECB rate is now {ecb}. Update USD_PER_EUR and the footer.")
+    table["gdp"] = table.gdp_usd.astype(float) / USD_PER_EUR
     table["share"] = table.gdp / table.gdp.sum()
     table["per_person"] = table.gdp / table["pop"]
     return table.sort_values("gdp", ascending=False).reset_index(drop=True)
@@ -232,7 +240,7 @@ def check_claims(countries, grids, refresh=False):
     total = countries.gdp.sum()
     average = total / countries["pop"].sum()
     imf_table = load_imf(refresh)
-    imf = lambda code: imf_table[code] * 1e9
+    imf = lambda code: imf_table[code] * 1e9 / USD_PER_EUR  # euros, at the same rate
     squares = Counter(s[0] for landmass in grids["gdp"] for s in landmass)
     land = countries.land_km2.sum()
     top5 = countries.iloc[:5]
@@ -246,8 +254,8 @@ def check_claims(countries, grids, refresh=False):
         "every country within one square of its share": all(
             abs(squares[r.code] - r.share * 1000) < 1 for r in countries.itertuples()
         ),
-        "a square is $27.5B": round(total / 1000 / 1e9, 1) == 27.5,
-        "combined GDP is $27.5T": round(total / 1e12, 1) == 27.5,
+        "a square is 24.3 billion euros": round(total / 1000 / 1e9, 1) == 24.3,
+        "combined GDP is 24.3 trillion euros": round(total / 1e12, 1) == 24.3,
         "top five are the named ones": set(top5.code) == {"DEU", "GBR", "FRA", "ITA", "ESP"},
         "top five are 62%": round(top5.share.sum() * 100) == 62,
         "Ukraine has eight squares": squares["UKR"] == 8,
@@ -255,18 +263,18 @@ def check_claims(countries, grids, refresh=False):
         "Ukraine is 10% of land": round(c.land_km2["UKR"] / land * 100) == 10,
         "Ukraine is 0.8% of GDP": round(c.share["UKR"] * 100, 1) == 0.8,
         "Germany beats 29 smallest": n_beaten == GERMANY_BEATS,
-        "Germany printed as $5.1T": 5.05e12 <= c.gdp["DEU"] < 5.15e12,
+        "Germany printed as 4.5 trillion euros": 4.45e12 <= c.gdp["DEU"] < 4.55e12,
         "Germany above Japan": c.gdp["DEU"] > imf("JPN"),
         "U.K. above India": c.gdp["GBR"] > imf("IND"),
         "France above Russia and Canada": c.gdp["FRA"] > max(imf("RUS"), imf("CAN")),
         "Italy above Canada and Brazil": c.gdp["ITA"] > max(imf("CAN"), imf("BRA")),
         "Spain above Mexico and Australia": c.gdp["ESP"] > max(imf("MEX"), imf("AUS")),
         "Luxembourg is highest per person": c.per_person.idxmax() == "LUX",
-        "Luxembourg is $148K per person": round(c.per_person["LUX"] / 1e3) == 148,
+        "Luxembourg is 131K euros per person": round(c.per_person["LUX"] / 1e3) == 131,
         "Luxembourg is about 3x the average": 2.9 < c.per_person["LUX"] / average < 3.3,
-        "average is $46K": round(average / 1e3) == 46,
+        "average is 41K euros": round(average / 1e3) == 41,
         "Kosovo and Montenegro get no square": squares["KOS"] == 0 and squares["MNE"] == 0,
-        "Kosovo is $12B and Montenegro $9B": round(c.gdp["KOS"] / 1e9) == 12 and round(c.gdp["MNE"] / 1e9) == 9,
+        "Kosovo is 11B euros and Montenegro 8B": round(c.gdp["KOS"] / 1e9) == 11 and round(c.gdp["MNE"] / 1e9) == 8,
         "all others get a square": all(squares[code] > 0 for code in c.index if code not in ("KOS", "MNE")),
         "no country is below the color scale": countries.per_person.min() >= PC_LOW,
         "the scale's centre is the average": abs(PC_MID - average) < 1,
@@ -289,7 +297,7 @@ EU_BLUE = "#003399"
 EU_GOLD = "#FFCC00"
 # Gold to pale to blue, with the European average at the middle stop
 RAMP = ["#B98A00", "#FFCC00", "#FFE78A", "#EFECE1", "#7F9FE0", "#003399", "#001E63"]
-PC_LOW, PC_MID, PC_HIGH = 5_000, 46_086, 100_000
+PC_LOW, PC_MID, PC_HIGH = 5_000, 40_785, 90_000
 GERMANY_BEATS = 29
 
 
@@ -385,7 +393,7 @@ def text_color(background):
 
 
 def money(value):
-    return f"${value / 1e12:.2f}T" if value >= 1e12 else f"${value / 1e9:.0f}B"
+    return f"\u20ac{value / 1e12:.2f}T" if value >= 1e12 else f"\u20ac{value / 1e9:.0f}B"
 
 
 def text(x, y, content, size, weight=700, family="sans", fill=INK, anchor="middle",
@@ -522,7 +530,7 @@ def header():
     ]
     out.append(lines(396, 218, [
         "Each square is 0.1% of Europe\u2019s GDP, about",
-        "$27.5 billion. Five countries produce over 60%",
+        "\u20ac24.3 billion. Five countries produce over 60%",
         "of it, while Ukraine, the largest country by",
         "land, earns just eight squares.",
     ], 13.5, 18.5))
@@ -534,11 +542,11 @@ def header():
         f'<rect x="{x}" y="{y}" width="{width}" height="11" rx="2" fill="url(#legend)"/>'
     )
     out.append(text(x, y - 6, "Color: GDP per person, 2025", 11, 600, "sans", INK, "start"))
-    out.append(text(x - 5, y + 10, "$5K", 11.5, 700, "num", INK, "end"))
-    out.append(text(x + width + 5, y + 10, "$100K+", 11.5, 700, "num", INK, "start"))
+    out.append(text(x - 5, y + 10, "\u20ac5K", 11.5, 700, "num", INK, "end"))
+    out.append(text(x + width + 5, y + 10, "\u20ac90K+", 11.5, 700, "num", INK, "start"))
     middle = x + width / 2
     out.append(f'<path d="M{middle} {y - 2}V{y + 13}" stroke="{INK}" stroke-width="1.4"/>')
-    out.append(text(middle, y + 25, "Europe average $46K", 10, 600, "sans", MUTED))
+    out.append(text(middle, y + 25, "Europe average \u20ac41K", 10, 600, "sans", MUTED))
     return "".join(out)
 
 
@@ -565,7 +573,7 @@ def luxembourg_magnifier(main, data, fill_of):
     out.append(text(cx, cy + 41, money(data["LUX"].gdp), 20, 900, "serif"))
     out.append(lines(cx, cy + radius + 18, [
         "Highest GDP per person:",
-        "$148K, or 3x the average",
+        "\u20ac131K, or 3x the average",
     ], 11.5, 14.5, weight=600, anchor="middle"))
     return "".join(out)
 
@@ -600,8 +608,8 @@ def bottom_band(data):
         text(44, y, "62%", 54, 900, "serif", EU_BLUE, "start", 'letter-spacing="-1"'),
         lines(158, y - 31, ["of Europe\u2019s GDP comes from", "five countries: Germany, the", "U.K., France, Italy and Spain"], 12.5, 17),
         f'<path d="M386 {y - 44}V{y + 12}" stroke="{INK}" stroke-width=".8"/>',
-        text(410, y, "$5.1T", 50, 900, "serif", EU_BLUE, "start", 'letter-spacing="-.6"'),
-        lines(548, y - 31, ["Germany out-produces", "the 29 smallest economies", "here combined"], 12.5, 17),
+        text(410, y, "\u20ac4.5T", 50, 900, "serif", EU_BLUE, "start", 'letter-spacing="-.6"'),
+        lines(562, y - 31, ["Germany out-produces", "the 29 smallest economies", "here combined"], 12.5, 17),
         f'<path d="M744 {y - 44}V{y + 12}" stroke="{INK}" stroke-width=".8"/>',
         text(768, y - 22, "Too small for a square", 17, 800, "serif", INK, "start"),
         lines(768, y, [f"Kosovo {money(data['KOS'].gdp)} and Montenegro {money(data['MNE'].gdp)}"], 12.5, 17),
@@ -613,9 +621,9 @@ def footer():
     return "".join([
         f'<path d="M26 {y}H1174" stroke="{INK}" stroke-width="1"/>',
         lines(26, y + 20, [
-            "Source: IMF World Economic Outlook (2025 GDP and population, current dollars, by country); World Bank (land area, no figure for Kosovo).",
-            "Europe here means 40 countries, excluding Russia, T\u00fcrkiye and microstates. Squares are whole-number shares (largest remainder method) of",
-            "their combined GDP, $27.5T. Ukraine\u2019s outline includes Crimea. \u201cBigger than\u201d compares nominal 2025 GDP.",
+            "Source: IMF World Economic Outlook (2025 GDP and population, by country), converted from U.S. dollars at the ECB\u2019s 2025 average of $1.13 per euro;",
+            "World Bank (land area, no figure for Kosovo). Europe here means 40 countries, excluding Russia, T\u00fcrkiye and microstates. Squares are whole-number",
+            "shares (largest remainder method) of their combined GDP, \u20ac24.3T. Ukraine\u2019s outline includes Crimea. \u201cBigger than\u201d compares nominal 2025 GDP.",
         ], 10.5, 14.5, weight=400, fill=MUTED),
         lines(1174, y + 20, ["Josep Ferrer", "databites.tech", "Grid built with popgrid"], 11, 14.5, weight=600, anchor="end"),
     ])
