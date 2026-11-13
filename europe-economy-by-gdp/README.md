@@ -1,6 +1,6 @@
 # Europe's Economy, Sized by 2025 GDP, Not Land
 
-![Europe's Economy, Sized by 2025 GDP, Not Land](output.png)
+![Europe's Economy, Sized by 2025 GDP, Not Land](europe-economy-by-gdp.png)
 
 A tiled map of 40 European countries with 1,000 squares, each one 0.1% of their combined GDP (about €24.3 billion). Square count shows GDP. Color shows GDP per person, gold below the European average and blue above it. A small land map of the same countries sits alongside for contrast.
 
@@ -19,7 +19,7 @@ Needs Python and an installed Chrome, Chromium or Edge, which renders the PNG.
 
 ```bash
 pip install -r requirements.txt
-python make_map.py            # rebuilds output.png from the snapshot
+python make_map.py            # rebuilds europe-economy-by-gdp.png from the snapshot
 python make_map.py --refresh  # downloads current figures first
 ```
 

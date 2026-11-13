@@ -1,15 +1,15 @@
 # The Price of AI
 
-![The Price of AI](output.png)
+![The Price of AI](price-of-ai.png)
 
-The cheapest model at least as good as GPT-4 now costs nearly 700x less than GPT-4 did at launch in March 2023. The priciest new flagships still launch at $20 per million tokens, about half of what GPT-4 cost.
+The cheapest model at least as good as GPT-4 now costs nearly 700x less than GPT-4 did at launch in March 2023. The priciest new flagships still launch at $20 per million tokens, about half of what GPT-4 cost, while others launch as low as $4.
 
 ## Method
 
 - **Price:** USD per million tokens, blending three parts input to one part output, as Epoch AI and the Stanford AI Index do. List prices at the shortest context tier, excluding batch discounts and free tiers.
-- **GPT-4 level:** a [GPQA Diamond](https://epoch.ai/benchmarks/gpqa-diamond) score at or above GPT-4's 35.7%, using Epoch AI's best score across scorers. Only models with a score in Epoch's hub qualify.
+- **GPT-4 level:** a [GPQA Diamond](https://epoch.ai/benchmarks/gpqa-diamond) score at or above GPT-4's 35.7%, using Epoch AI's best score across scorers. Only models with a score in Epoch's hub qualify. Claude 3 Haiku (36.3%) and GPT-4o mini (37.7%) clear it within the test's margin of error of about 2.4 points, so the timing of the March 2024 drop rests on a narrow margin. The end point and the headline do not.
 - **The line:** each new low in the price of a qualifying model, at the price charged by the company that built it, from release or from a later price cut. `same_level.csv` gives the source for each step.
-- **The dots:** each lab's top generally available API tier at each release, for OpenAI, Anthropic and Google, excluding Pro tiers, at first priced public availability. `flagships.csv` gives the source for each one. The choice of models is an editorial call.
+- **The dots:** each lab's top generally available API tier at each release, for OpenAI, Anthropic and Google, excluding Pro tiers, at first priced public availability. `flagships.csv` gives the source for each one. The choice of models is an editorial call. Other labs are not plotted, and Gemini 1.0 Ultra is left out because it was allowlist only. The open marker shows Gemini 4 Argon's scheduled price from December 1, 2026. Claude Fable 5.1 and GPT-6 Astra came out two days apart at the same price, so their dots are nudged apart.
 - **Third-party marker:** the lowest price I found from a healthy host on OpenRouter for a qualifying open model on November 3, 2026. Host prices move often, so it sits apart from the line.
 
 ## Limits

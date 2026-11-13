@@ -7,7 +7,8 @@ Google,Gemini 1.0 Pro,2023-12-13,1,2,1,Approximate: converted from per-character
 Anthropic,Claude 3 Opus,2024-03-04,15,75,1,Anthropic launch post
 Google,Gemini 1.5 Pro,2024-04-09,7,21,1,Public preview price; secondary source
 OpenAI,GPT-4o,2024-05-13,5,15,0,Secondary source; OpenAI says half the price of GPT-4 Turbo
-OpenAI,o1,2024-12-17,15,60,1,OpenAI model page and TechCrunch
+OpenAI,o1-preview,2024-09-12,15,60,1,OpenAI model page; first priced public availability of o1
+OpenAI,o1,2024-12-17,15,60,0,OpenAI model page and TechCrunch
 OpenAI,GPT-4.5,2025-02-27,75,150,1,OpenAI model page
 Google,Gemini 2.5 Pro,2025-04-04,1.25,10,0,First billed preview; secondary source and current Google pricing page
 OpenAI,o3,2025-04-16,10,40,0,Secondary source; later cut to 2/8

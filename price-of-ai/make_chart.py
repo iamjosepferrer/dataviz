@@ -13,7 +13,7 @@ Setup:
     Google Chrome, Chromium or Edge must be installed (it renders the PNG).
 
 Run:
-    python make_chart.py               # writes output.png
+    python make_chart.py               # writes price-of-ai.png
     python make_chart.py --scale 1
 
 Data, committed so the chart stays reproducible:
@@ -76,6 +76,7 @@ def check_claims(flagships, same_level, third_party, scores):
     words_then = 1e6 / first.price * WORDS_PER_TOKEN
     words_now = 1e6 / last.price * WORDS_PER_TOKEN
     score = scores.set_index("model_version").score
+    errors = scores.set_index("model_version").stderr
     gpt4 = score["gpt-4-0314"]
     open_host = third_party.iloc[0]
 
@@ -99,6 +100,15 @@ def check_claims(flagships, same_level, third_party, scores):
         "364x gap": round(top_today / last.price) == 364,
         "GPT-4.5 is the priciest": flagships.price.idxmax() == flagships.index[flagships.model == "GPT-4.5"][0],
         "GPT-4.5 is $93.75": flagships.price.max() == 93.75,
+        "Claude 3 Haiku and GPT-4o mini are within the margin of error": all(
+            0 <= score[m] - gpt4 < errors[m] for m in ("claude-3-haiku-20240307", "gpt-4o-mini-2024-07-18")
+        ),
+        "the other steps clear GPT-4 by more than the margin of error": all(
+            score[m] - gpt4 > errors[m] for m in same_level.gpqa_version[1:]
+            if m not in ("claude-3-haiku-20240307", "gpt-4o-mini-2024-07-18")
+        ),
+        "others launch as low as $4": newest.price.min() == 4,
+        "o1-preview and o1 share $26.25": all(flagships[flagships.model == m].price.iloc[0] == 26.25 for m in ("o1-preview", "o1")),
         "Gemini 4 Argon is $4 now, $8 from December": flagships[flagships.model == "Gemini 4 Argon"].price.iloc[0] == 4 and (3 * 4 + 20) / 4 == 8,
         "Gemini 1.0 Pro is the lowest, about $1.25": flagships.price.idxmin() == flagships.index[flagships.model == "Gemini 1.0 Pro"][0] and flagships.price.min() == 1.25,
         "Gemini 2.5 Pro, GPT-5 and GPT-5.1 are at $3.44": set(flagships[flagships.price.round(2) == 3.44].model) == {"Gemini 2.5 Pro", "GPT-5", "GPT-5.1"},
@@ -112,7 +122,7 @@ def check_claims(flagships, same_level, third_party, scores):
 
 # DESIGN
 
-WIDTH, HEIGHT = 1200, 1262
+WIDTH, HEIGHT = 1200, 1282
 BG = "#0B1020"
 INK = "#F4F1EA"
 MUTED = "#A3ABBF"
@@ -167,10 +177,10 @@ def halo(x, y, content, size, weight, family, fill, anchor="start"):
 def header():
     return "".join([
         text(24, 128, "The Price of AI", 146, 900, "serif", INK, "start", 'letter-spacing="-2.4"'),
-        text(1174, 182, "GPT-4-Level AI Is Nearly 700x Cheaper. The Frontier, Just 2x.", 33, 700, "serif", INK, "end"),
+        text(1174, 182, "GPT-4-Level AI Is Nearly 700x Cheaper. The Priciest Flagships, Just 2x.", 31, 700, "serif", INK, "end"),
         lines(26, 226, [
             "Since GPT-4 launched, the cheapest model that matches it has fallen from $37.50 to $0.055 per million tokens.",
-            "The priciest new flagships still launch at $20, about half of what GPT-4 cost.",
+            "The priciest new flagships still launch at $20, about half of what GPT-4 cost, while others launch as low as $4.",
         ], 15, 21),
     ])
 
@@ -214,11 +224,13 @@ def flagship_dots(flagships):
     # (dx, dy, anchor) from the dot, for the labeled models
     offsets = {
         "GPT-4": (12, -9, "start"), "Claude 2": (0, -13, "middle"), "Claude 3 Opus": (9, -11, "start"),
-        "Gemini 1.5 Pro": (10, 17, "start"), "o1": (10, -10, "start"), "Claude Opus 4": (10, -10, "start"),
+        "Gemini 1.5 Pro": (10, 17, "start"), "Claude Opus 4": (10, -10, "start"),
         "Claude Fable 5": (-10, -12, "end"),
     }
+    # Released two days apart at the same price, so they are nudged apart to show both
+    nudge = {"Claude Fable 5.1": -6, "GPT-6 Astra": 6}
     for r in flagships.itertuples():
-        x, y = x_of(r.date), y_of(r.price)
+        x, y = x_of(r.date) + nudge.get(r.model, 0), y_of(r.price)
         out.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="6.5" fill="{CORAL}" stroke="{BG}" stroke-width="1.6"/>')
         if r.label and r.model in offsets:
             dx, dy, anchor = offsets[r.model]
@@ -227,6 +239,9 @@ def flagship_dots(flagships):
     def spot(model):
         row = flagships[flagships.model == model].iloc[0]
         return x_of(row.date), y_of(row.price)
+
+    x, y = spot("o1-preview")
+    out.append(halo(x - 4, y - 11, "o1-preview, o1 $26.25", 12.5, 600, "sans", INK))
 
     x, y = spot("GPT-4.5")
     out.append(halo(x + 12, y - 10, "GPT-4.5 $93.75", 14, 700, "sans", INK))
@@ -247,6 +262,9 @@ def flagship_dots(flagships):
     x, y = spot("Gemini 4 Argon")
     out.append(halo(x + 4, y + 25, "Gemini 4 Argon $4", 12.5, 600, "sans", INK, "end"))
     out.append(halo(x + 4, y + 41, "Introductory price, $8 from December 1", 11, 500, "sans", MUTED, "end"))
+    x8, y8 = x_of(date(2026, 12, 1)), y_of(8)
+    out.append(f'<path d="M{x + 5:.1f} {y - 5:.1f}L{x8 - 4:.1f} {y8 + 4:.1f}" stroke="{CORAL}" stroke-width="1.2" stroke-dasharray="2 3"/>')
+    out.append(f'<circle cx="{x8:.1f}" cy="{y8:.1f}" r="5.5" fill="{BG}" stroke="{CORAL}" stroke-width="2"/>')
     return "".join(out)
 
 
@@ -260,11 +278,13 @@ def callouts(same_level, third_party):
     host_x, host_y = x_of(open_host.date), y_of(open_host.price)
     return "".join([
         f'<path d="M{x_of(first.date):.1f} {y0:.1f}H{RIGHT}" stroke="{CORAL}" stroke-width="1" stroke-dasharray="3 5" stroke-opacity=".7"/>',
+        f'<path d="M{x_end:.1f} {TOP}V{BOTTOM}" stroke="{MUTED}" stroke-width="1" stroke-dasharray="2 4"/>',
+        text(x_end, BOTTOM + 20, "Nov 3", 13, 600, "sans", MUTED, "middle"),
         halo(x_of(date(2025, 12, 1)), y0 - 7, "GPT-4\u2019s launch price, $37.50", 11.5, 600, "sans", CORAL),
         f'<circle cx="{x_end:.1f}" cy="{y_low:.1f}" r="7" fill="{MINT}"/>',
-        text(x_end + 4, y_low + 25, last.model, 13, 700, "sans", MINT, "end"),
-        text(x_end + 4, y_low + 61, money(last.price), 36, 900, "serif", MINT, "end"),
-        text(x_end + 4, y_low + 80, "Scores 82% on GPQA Diamond, GPT-4 scored 36%", 12, 500, "sans", MUTED, "end"),
+        text(x_end - 8, y_low + 25, last.model, 13, 700, "sans", MINT, "end"),
+        text(x_end - 8, y_low + 61, money(last.price), 36, 900, "serif", MINT, "end"),
+        lines(x_end - 8, y_low + 79, ["Qwen3.7 Flash scores 82% on GPQA", "Diamond. GPT-4 scored 36%."], 11.5, 14.5, weight=500, fill=MUTED, anchor="end"),
         f'<circle cx="{host_x:.1f}" cy="{host_y:.1f}" r="5" fill="{BG}" stroke="{MUTED}" stroke-width="2"/>',
         text(host_x - 11, host_y - 2, f"{open_host.model} {money(open_host.price)}", 12, 600, "sans", MUTED, "end"),
         text(host_x - 11, host_y + 13, "on a third-party host", 11, 500, "sans", MUTED, "end"),
@@ -296,13 +316,20 @@ def dollar_panel(same_level):
 
 
 def legend():
-    x, y = 580, 276
+    x, y = 26, 284
+    x2 = x + 318
+    x3 = x2 + 342
     return "".join([
-        text(LEFT - 66, y + 8, "Price per million tokens, log scale", 12.5, 600, "sans", MUTED),
-        f'<circle cx="{x}" cy="{y - 4}" r="6.5" fill="{CORAL}"/>',
-        text(x + 12, y, "Flagship model at launch", 12.5, 600),
-        f'<path d="M{x + 186} {y - 4}H{x + 212}" stroke="{MINT}" stroke-width="4"/>',
-        text(x + 220, y, "Cheapest at least as good as GPT-4, from its developer", 12.5, 600),
+        text(1174, y, "Price per million tokens, log scale", 12.5, 600, "sans", MUTED, "end"),
+        f'<circle cx="{x + 7}" cy="{y - 4}" r="6.5" fill="{CORAL}"/>',
+        text(x + 19, y, "Flagship at launch (OpenAI, Anthropic, Google)", 12.5, 600),
+        f'<path d="M{x2} {y - 4}H{x2 + 28}" stroke="{MINT}" stroke-width="4"/>',
+        f'<circle cx="{x2 + 14}" cy="{y - 4}" r="5" fill="{BG}" stroke="{MINT}" stroke-width="2.5"/>',
+        text(x2 + 36, y, "New low at GPT-4 level, at the developer\u2019s price", 12.5, 600),
+        f'<circle cx="{x3 + 6}" cy="{y - 4}" r="5" fill="{BG}" stroke="{MUTED}" stroke-width="2"/>',
+        text(x3 + 18, y, "Third-party host", 12.5, 600),
+        f'<circle cx="{x3 + 142}" cy="{y - 4}" r="5.5" fill="{BG}" stroke="{CORAL}" stroke-width="2"/>',
+        text(x3 + 153, y, "Scheduled price", 12.5, 600),
     ])
 
 
@@ -311,14 +338,15 @@ def footer():
     return "".join([
         f'<path d="M26 {y}H1174" stroke="{MUTED}" stroke-width="1"/>',
         lines(26, y + 22, [
-            "Price per million tokens, log scale, blending three parts input to one part output, as Epoch AI and the Stanford AI Index do. List prices at the shortest context tier, excluding batch",
-            "discounts and free tiers. Flagships: each lab\u2019s top generally available API tier at each release, excluding Pro tiers, at first priced public availability. Gemini 1.0 Pro is approximate,",
-            "converted from per-character pricing. \u201cAs good as GPT-4\u201d means a GPQA Diamond score at or above GPT-4\u2019s 36%, a PhD-level science test, among models scored by Epoch AI. The line uses",
-            "each developer\u2019s own price at release or after a price cut. Per-token prices do not capture reasoning models using more tokens per task. Words assume 0.75 per token, novels 90,000 words.",
+            "Price per million tokens, blending three parts input to one part output, as Epoch AI and the Stanford AI Index do. List prices at the shortest context tier, excluding batch discounts",
+            "and free tiers. Flagships: the top generally available API tier from OpenAI, Anthropic and Google at each release, excluding Pro tiers, at first priced public availability. GPT-4 and GPT-4",
+            "Turbo are both flagships and new lows. Gemini 1.0 Pro is approximate, converted from per-character pricing; Gemini 1.0 Ultra was allowlist only. \u201cAs good as GPT-4\u201d means a GPQA Diamond",
+            "score at or above GPT-4\u2019s 36%, a PhD-level science test, among models scored by Epoch AI. Claude 3 Haiku and GPT-4o mini clear it within the test\u2019s margin of error. The line uses each",
+            "developer\u2019s own price at release or after a price cut. Per-token prices do not capture reasoning models using more tokens per task. Words assume 0.75 per token, novels 90,000 words.",
             "",
             "Source: Epoch AI Benchmarking Hub (CC BY); OpenAI, Anthropic, Google, Alibaba and Mistral pricing; TechCrunch; OpenRouter (third-party price, November 3, 2026); llm-prices.com.",
         ], 10.5, 14.5, weight=400, fill=MUTED),
-        lines(1174, y + 88, ["Josep Ferrer", "databites.tech"], 11, 14.5, weight=600, anchor="end"),
+        lines(1174, y + 102, ["Josep Ferrer", "databites.tech"], 11, 14.5, weight=600, anchor="end"),
     ])
 
 
@@ -403,7 +431,7 @@ def screenshot(page_html, out, scale):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[1])
-    parser.add_argument("--out", default=str(HERE / "output.png"))
+    parser.add_argument("--out", default=str(HERE / "price-of-ai.png"))
     parser.add_argument("--scale", type=float, default=2, help="pixel density; 2 gives 2400 px wide")
     parser.add_argument("--skip-checks", action="store_true")
     args = parser.parse_args()

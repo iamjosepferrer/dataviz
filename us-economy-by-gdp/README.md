@@ -1,6 +1,6 @@
 # The U.S. Economy, Sized by 2025 GDP, Not Land
 
-![The U.S. Economy, Sized by 2025 GDP, Not Land](output.png)
+![The U.S. Economy, Sized by 2025 GDP, Not Land](us-economy-by-gdp.png)
 
 A tiled map of the 50 states and D.C. with 1,000 squares, each one 0.1% of U.S. GDP (about $31 billion). Square count shows GDP, color shows GDP per person. A small land map of the same states sits alongside for contrast.
 
@@ -12,7 +12,7 @@ Needs Python and an installed Chrome, Chromium or Edge, which renders the PNG.
 
 ```bash
 pip install -r requirements.txt
-python make_map.py            # rebuilds output.png from the snapshot
+python make_map.py            # rebuilds us-economy-by-gdp.png from the snapshot
 python make_map.py --refresh  # downloads current figures first
 ```
 

@@ -6,9 +6,9 @@ Data visualizations and the code behind them, by [Josep Ferrer](https://databite
 
 | | |
 |---|---|
-| [![The U.S. Economy, Sized by 2025 GDP, Not Land](us-economy-by-gdp/output.png)](us-economy-by-gdp) | **[The U.S. Economy, Sized by 2025 GDP, Not Land](us-economy-by-gdp)**<br>A popgrid map with one square for each 0.1% of U.S. GDP. |
-| [![Europe's Economy, Sized by 2025 GDP, Not Land](europe-economy-by-gdp/output.png)](europe-economy-by-gdp) | **[Europe's Economy, Sized by 2025 GDP, Not Land](europe-economy-by-gdp)**<br>The same map for 40 European countries, in EU blue and gold. |
-| [![The Price of AI](price-of-ai/output.png)](price-of-ai) | **[The Price of AI](price-of-ai)**<br>GPT-4-level AI is nearly 700x cheaper, while the frontier is only about 2x cheaper. |
+| [![The U.S. Economy, Sized by 2025 GDP, Not Land](us-economy-by-gdp/us-economy-by-gdp.png)](us-economy-by-gdp) | **[The U.S. Economy, Sized by 2025 GDP, Not Land](us-economy-by-gdp)**<br>A popgrid map with one square for each 0.1% of U.S. GDP. |
+| [![Europe's Economy, Sized by 2025 GDP, Not Land](europe-economy-by-gdp/europe-economy-by-gdp.png)](europe-economy-by-gdp) | **[Europe's Economy, Sized by 2025 GDP, Not Land](europe-economy-by-gdp)**<br>The same map for 40 European countries, in EU blue and gold. |
+| [![The Price of AI](price-of-ai/price-of-ai.png)](price-of-ai) | **[The Price of AI](price-of-ai)**<br>GPT-4-level AI is nearly 700x cheaper, while the priciest flagships are only about 2x cheaper. |
 
 ## #30DayMapChallenge
 

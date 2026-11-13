@@ -1,328 +1,328 @@
-model_version,release_date,score,organization
-mistral-large-4-0-oss_high,2026-10-29,0.9015,Mistral AI
-gpt-6.1-terra_max,2026-10-26,0.9432,OpenAI
-deepseek-v4.1-flash-1017_max,2026-10-17,0.9318,DeepSeek
-Muse-Spark-Open-816B-A42B_xhigh,2026-10-15,0.8857,Meta AI
-gemini-4-argon_high,2026-09-30,0.964,Google DeepMind
-mistral-large-4-0_high,2026-10-06,0.8807,Mistral AI
-deepseek-v4.1-flash_max,2026-09-09,0.8984,DeepSeek
-claude-haiku-5-5_max,2026-10-07,0.8965,Anthropic
-gpt-6.1-sol_max,2026-09-29,0.9539,OpenAI
-claude-sonnet-5-5_max,2026-09-28,0.9558,Anthropic
-gpt-6-luna_max,2026-09-22,0.9047,OpenAI
-grok-4.7_xhigh,2026-09-21,0.9274,xAI
-gpt-6-sol_max,2026-09-22,0.9432,OpenAI
-claude-opus-5-5_max,2026-09-22,0.9059,Anthropic
-qwen3.8-max-0902_xhigh,2026-09-01,0.923,Alibaba
-gemini-3.8-flash_high,2026-09-02,0.9539,Google DeepMind
-granite-4.0-micro,2025-10-02,0.2828,
-seed-oss-36b-instruct,2025-08-20,0.7153,
-Qwen3-32B_none,2025-04-29,0.541,Alibaba
-qwen3-30b-a3b-thinking-2507,2025-07-30,0.7008,Alibaba
-qwen3-30b-a3b-instruct-2507,2025-07-29,0.5562,Alibaba
-Qwen3-30B-A3B_none,2025-04-29,0.5038,Alibaba
-Qwen3-30B-A3B,2025-04-29,0.6168,Alibaba
-qwen2.5-7b-instruct,2024-09-19,0.3548,Alibaba
-mistral-small-3.1-2503,2025-03-17,0.4192,Mistral AI
-mistral-small-3-2501,2025-01-30,0.4729,Mistral AI
-magistral-small-2509,2025-09-18,0.476,Mistral AI
-Llama-3.2-1B-Instruct,2024-09-24,0.2393,Meta AI
-glm-4.7-flash_none,,0.4514,
-glm-4.7-flash,,0.6054,
-gpt-6-astra_max,2026-09-03,0.9577,OpenAI
-granite-4.0-1b,2025-10-28,0.2399,
-qwen3.5-35b-a3b_none,2026-02-24,0.8119,Alibaba
-qwen3.5-35b-a3b,2026-02-24,0.8346,Alibaba
-qwen3-4b-instruct-2507,2025-08-06,0.4583,
-qwen3-4b_none,2025-04-29,0.4356,Alibaba
-qwen3-4b,2025-04-29,0.5234,Alibaba
-Qwen3-32B,2025-04-29,0.6572,Alibaba
-qwen3-14b_none,2025-04-29,0.5341,Alibaba
-qwen3-14b,2025-04-29,0.6376,Alibaba
-qwen3-1.7b_none,2025-04-29,0.3062,Alibaba
-qwen3-1.7b,2025-04-29,0.3801,Alibaba
-mistral-small-3.2-2506,2025-06-20,0.4905,Mistral AI
-granite-4.0-350m,2025-10-28,0.1124,
-gemma-3-4b-it,2025-03-12,0.2323,Google DeepMind
-gemma-3-1b-it,2025-03-12,0.1995,Google DeepMind
-gemma-3-12b-it,2025-03-12,0.3946,Google DeepMind
-DeepSeek-R1-Distill-Qwen-32B,2025-01-20,0.6414,DeepSeek
-DeepSeek-R1-Distill-Qwen-1.5B,2025-01-20,0.3359,DeepSeek
-deepseek-r1-0528-qwen3-8b,2025-05-28,0.0928,
-QwQ-32B,2025-03-05,0.6534,Alibaba
-Llama-3.1-8B-Instruct,2024-07-23,0.2696,Meta AI
-qwen3.5-9B_none,2026-02-24,0.7891,Alibaba
-qwen3.5-9B,2026-02-24,0.7898,Alibaba
-qwen3-8b_none,2025-04-28,0.4747,Alibaba
-qwen3-8b,2025-04-28,0.5676,Alibaba
-gemma-3-27b-it,2025-03-12,0.4773,Google DeepMind
-gpt-oss-20b_medium,2025-08-05,0.608,OpenAI
-gpt-oss-20b_low,2025-08-05,0.5316,OpenAI
-glm-5.3-flash_max,2026-08-20,0.9015,Z.ai (Zhipu AI)
-glm-5.3_max,2026-08-14,0.9091,Z.ai (Zhipu AI)
-deepseek-v4-pro-0813_max,2026-08-13,0.9167,DeepSeek
-gemini-3.7-flash_high,2026-08-13,0.9482,Google DeepMind
-inkling-small_xhigh,2026-07-15,0.8851,Thinking Machines
-grok-4.6_xhigh,2026-08-12,0.9318,xAI
-grok-4.6_high,2026-08-12,0.94,xAI
-nemotron-3-ultra,2026-06-04,0.8535,Nvidia
-MiniMax-M3_none,2026-06-01,0.8131,MiniMax
-MiniMax-M3,2026-06-01,0.9091,MiniMax
-glm-5.2_none,2026-06-16,0.7121,Z.ai (Zhipu AI)
-glm-5.2_low,2026-06-16,0.8788,Z.ai (Zhipu AI)
-glm-5.1,2026-04-07,0.899,Z.ai (Zhipu AI)
-gpt-5.4-mini-2026-03-17_xhigh,2026-03-17,0.8687,OpenAI
-gpt-5.6-sol_none,2026-07-09,0.8283,OpenAI
-gpt-5.5_none,2026-04-23,0.7727,OpenAI
-kimi-k3_low,2026-07-16,0.8485,Moonshot
-kimi-k3_high,2026-07-16,0.9192,Moonshot
-gpt-5.6-terra_none,2026-07-09,0.7727,OpenAI
-gpt-5.4-mini-2026-03-17_none,2026-03-17,0.6414,OpenAI
-qwen3.6-max-preview,2026-04-20,0.8737,Alibaba
-gpt-5.6-sol_low,2026-07-09,0.899,OpenAI
-qwen3.7-max,2026-05-19,0.9091,Alibaba
-o3-2025-04-16_medium,2025-04-16,0.8081,OpenAI
-gpt-5.1-2025-11-13_none,2025-11-13,0.6667,OpenAI
-kimi-k2.7-code,2026-06-12,0.8788,Moonshot
-gpt-5.6-luna_none,2026-07-09,0.6364,OpenAI
-gpt-5.6-terra_low,2026-07-09,0.8737,OpenAI
-qwen3.6-plus,2026-03-31,0.8838,Alibaba
-o4-mini-2025-04-16_medium,2025-04-16,0.7778,OpenAI
-qwen3.6-27b,2026-04-22,0.8586,Alibaba
-qwen3.6-27b_none,2026-04-22,0.8485,Alibaba
-qwen3.5-397b-a17b,2026-02-13,0.8586,Alibaba
-qwen3.5-397b-a17b_none,2026-02-13,0.8636,Alibaba
-qwen3.5-plus,2026-02-16,0.8485,Alibaba
-gemini-3.6-flash_minimal,2026-07-21,0.8586,Google DeepMind
-qwen3.6-35b-a3b,2026-04-14,0.8384,Alibaba
-qwen3.6-35b-a3b_none,2026-04-14,0.8485,Alibaba
-qwen3.6-flash,2026-04-27,0.8333,Alibaba
-gpt-5.6-luna_low,2026-07-09,0.8232,OpenAI
-qwen3.7-plus,2026-06-02,0.8788,Alibaba
-qwen3.7-plus_none,2026-06-02,0.8182,Alibaba
-qwen3.7-flash,2026-07-27,0.8232,Alibaba
-qwen3.7-flash_none,2026-07-27,0.8081,Alibaba
-gpt-5.4-nano-2026-03-17_none,2026-03-17,0.5556,OpenAI
-qwen3.5-flash,2026-02-25,0.8232,Alibaba
-gpt-5-mini-2025-08-07_minimal,2025-08-07,0.7172,OpenAI
-gpt-5.4-nano-2026-03-17_low,2026-03-17,0.7222,OpenAI
-gemma-4-31b-it_minimal,2026-04-02,0.7576,Google DeepMind
-gemma-4-26b-a4b-it_minimal,2026-04-02,0.7323,Google DeepMind
-deepseek-v4-pro_none,2026-04-24,0.7323,DeepSeek
-deepseek-v4-pro_high,2026-04-24,0.9091,DeepSeek
-claude-opus-4-6_max,2026-02-05,0.8838,Anthropic
-gpt-oss-20b_high,2025-08-05,0.4596,OpenAI
-gemini-3.6-flash_low,2026-07-21,0.8636,Google DeepMind
-gemini-3.5-flash-lite_low,2026-07-21,0.7576,Google DeepMind
-gemini-3.5-flash-lite_minimal,2026-07-21,0.7424,Google DeepMind
-gemini-3.5-flash-lite_high,2026-07-21,0.8333,Google DeepMind
-gemini-3.5-flash_low,2026-05-19,0.8889,Google DeepMind
-gemini-3.1-pro-preview_high,2026-02-19,0.9444,Google DeepMind
-gemini-3.1-flash-lite_minimal,2026-03-03,0.7374,Google
-gemini-3.1-flash-lite_high,2026-03-03,0.8182,Google
-gemini-3.1-flash-lite_low,2026-03-03,0.7424,Google
-gemini-3-flash-preview_high,2025-12-17,0.8939,Google DeepMind
-claude-sonnet-5_max,2026-06-30,0.803,Anthropic
-claude-sonnet-4-6_max,2026-02-17,0.7879,Anthropic
-claude-opus-5,2026-07-24,0.9293,Anthropic
-claude-opus-5_low,2026-07-24,0.8788,Anthropic
-claude-opus-4-8_none,2026-05-28,0.8535,Anthropic
-claude-opus-4-8_low,2026-05-28,0.8838,Anthropic
-claude-opus-4-7_max,2026-04-16,0.8636,Anthropic
-claude-fable-5_max,2026-06-09,0.8586,Anthropic
-claude-fable-5_low,2026-06-09,0.7879,Anthropic
-claude-fable-5_high,2026-06-09,0.8333,Anthropic
-magistral-small-2506,2025-06-10,0.5606,Mistral AI
-Inkling_xhigh,2026-07-15,0.8826,Thinking Machines
-qwen3.8-max_xhigh,2026-08-02,0.9268,Alibaba
-gpt-5.5-instant,2026-05-05,0.8251,OpenAI
-deepseek-v4-flash-0731_max,2026-07-31,0.9104,DeepSeek
-gemini-3.6-flash_high,2026-07-21,0.9413,Google DeepMind
-claude-opus-5_max,2026-07-24,0.9388,Anthropic
-o1-2024-12-17_low,2024-12-17,0.7424,OpenAI
-gpt-5-2025-08-07_minimal,2025-08-07,0.7172,OpenAI
-o3-mini-2025-01-31_low,2025-01-31,0.6818,OpenAI
-kimi-k3_max,2026-07-16,0.9312,Moonshot
-deepseek-chat,2025-12-01,0.7121,DeepSeek
-o3-2025-04-16_low,2025-04-16,0.798,OpenAI
-gpt-5.4-2026-03-05_medium,2026-03-05,0.8889,OpenAI
-gpt-5.4-2026-03-05_none,2026-03-05,0.7475,OpenAI
-gpt-5.4-2026-03-05_high,2026-03-05,0.899,OpenAI
-gpt-5.4-2026-03-05_low,2026-03-05,0.8485,OpenAI
-gemini-3.5-flash_minimal,2026-05-19,0.8636,Google DeepMind
-gpt-5-nano-2025-08-07_low,2025-08-07,0.5758,OpenAI
-claude-sonnet-4-6_high,2026-02-17,0.8333,Anthropic
-gpt-5-nano-2025-08-07_minimal,2025-08-07,0.4848,OpenAI
-gpt-5.2-2025-12-11_none,2025-12-11,0.7323,OpenAI
-claude-sonnet-4-6_medium,2026-02-17,0.8333,Anthropic
-grok-4.20-0309-reasoning,2026-02-17,0.8933,xAI
-o4-mini-2025-04-16_low,2025-04-16,0.7525,OpenAI
-gpt-5.6-terra_max,2026-07-09,0.9331,OpenAI
-gpt-5.6-luna_max,2026-07-09,0.916,OpenAI
-gpt-5.6-sol_max,2026-07-09,0.935,OpenAI
-grok-4.5_high,2026-07-08,0.9343,xAI
-claude-sonnet-5_xhigh,2026-06-30,0.9053,Anthropic
-glm-5.2_max,2026-06-16,0.9186,Z.ai (Zhipu AI)
-grok-4.3_high,2026-04-17,0.8883,xAI
-deepseek-v4-pro_max,2026-04-24,0.8965,DeepSeek
-claude-opus-4-8_max,2026-05-28,0.9104,Anthropic
-gemini-3.5-flash_high,2026-05-19,0.928,Google DeepMind
-gpt-5.5_low,2026-04-23,0.9066,OpenAI
-kimi-k2.6,2026-04-20,0.9078,Moonshot
-gpt-5.5-pro-pre-release_xhigh,2026-04-23,0.9392,OpenAI
-gpt-5.5-pre-release_xhigh,2026-04-23,0.94,OpenAI
-claude-opus-4-7_xhigh,2026-04-16,0.9015,Anthropic
-gpt-5.4-mini-2026-03-17_high,2026-03-17,0.8359,OpenAI
-gpt-5.4-nano-2026-03-17_high,2026-03-17,0.7847,OpenAI
-muse-spark,2026-04-08,0.898,Meta AI
-gpt-5.4-pro-2026-03-05_xhigh,2026-03-05,0.946,OpenAI
-gpt-5.4-2026-03-05_xhigh,2026-03-05,0.933,OpenAI
-claude-sonnet-4-6_32K,2026-02-17,0.8737,Anthropic
-gemini-3.1-pro-preview,2026-02-19,0.941,Google DeepMind
-glm-5,2026-02-11,0.8782,Z.ai (Zhipu AI)
-claude-opus-4-6_32K,2026-02-05,0.9053,Anthropic
-claude-opus-4-6_64K,2026-02-05,0.8876,Anthropic
-kimi-k2p5,2026-01-27,0.876,Moonshot
-glm-4.7,2025-12-22,0.8333,Z.ai (Zhipu AI)
-gemini-3-flash-preview,2025-12-17,0.8321,Google DeepMind
-deepseek-reasoner,2025-12-01,0.8342,DeepSeek
-gpt-5.2-2025-12-11_xhigh,2025-12-11,0.914,OpenAI
-Qwen3-235B-A22B-Thinking-2507,2025-07-25,0.8005,Alibaba
-gpt-oss-120b_high,2025-08-05,0.7576,OpenAI
-gpt-5.2-2025-12-11_high,2025-12-11,0.8819,OpenAI
-gpt-5.2-2025-12-11_medium,2025-12-11,0.8788,OpenAI
-gpt-5.2-2025-12-11_low,2025-12-11,0.827,OpenAI
-claude-opus-4-5-20251101_16K,2025-11-24,0.8548,Anthropic
-claude-opus-4-5-20251101_32K,2025-11-24,0.8605,Anthropic
-claude-opus-4-5-20251101,2025-11-24,0.8068,Anthropic
-gemini-3-pro-preview,2025-11-18,0.9261,Google DeepMind
-gpt-5.1-2025-11-13_medium,2025-11-13,0.8504,OpenAI
-gemini-2.5-pro,2025-06-17,0.8529,Google DeepMind
-gpt-5.1-2025-11-13_high,2025-11-13,0.8763,OpenAI
-kimi-k2-thinking-turbo,2025-11-06,0.8422,Moonshot
-gpt-5-nano-2025-08-07_high,2025-08-07,0.6944,OpenAI
-gpt-5-mini-2025-08-07_high,2025-08-07,0.75,OpenAI
-gpt-5-2025-08-07_high,2025-08-07,0.8617,OpenAI
-claude-sonnet-4-5-20250929_16K,2025-09-29,0.7879,Anthropic
-claude-sonnet-4-5-20250929_59K,2025-09-29,0.8232,Anthropic
-gpt-4-0314,2023-03-14,0.3573,OpenAI
-claude-haiku-4-5-20251001_32K,2025-10-15,0.7121,Anthropic
-claude-sonnet-4-5-20250929_32K,2025-09-29,0.8173,Anthropic
-claude-haiku-4-5-20251001,2025-10-15,0.6048,Anthropic
-qwen3-max-2025-09-23,2025-09-24,0.726,Alibaba
-claude-sonnet-4-5-20250929,2025-09-29,0.7374,Anthropic
-gpt-5-mini-2025-08-07_medium,2025-08-07,0.7165,OpenAI
-gpt-5-2025-08-07_medium,2025-08-07,0.8535,OpenAI
-gpt-5-nano-2025-08-07_medium,2025-08-07,0.6742,OpenAI
-claude-opus-4-1-20250805_27K,2025-08-05,0.7677,Anthropic
-claude-opus-4-1-20250805_16K,2025-08-05,0.7727,Anthropic
-claude-opus-4-1-20250805,2025-08-05,0.7323,Anthropic
-gemini-2.5-pro-preview-06-05,2025-06-05,0.8485,Google DeepMind
-qwen3-235b-a22b,2025-04-29,0.7071,Alibaba
-gemini-2.5-pro-preview-05-06,2025-05-06,0.6667,Google DeepMind
-DeepSeek-R1-0528,2025-05-28,0.7633,DeepSeek
-claude-3-7-sonnet-20250219_64K,2025-02-24,0.7973,Anthropic
-grok-3-mini-beta_high,2025-04-09,0.7551,xAI
-DeepSeek-R1,2025-01-20,0.7172,DeepSeek
-claude-sonnet-4-20250514_59K,2025-05-22,0.7919,Anthropic
-grok-3-beta,2025-04-09,0.7576,xAI
-claude-sonnet-4-20250514_32K,2025-05-22,0.7828,Anthropic
-claude-opus-4-20250514_16K,2025-05-22,0.7626,Anthropic
-claude-sonnet-4-20250514_16K,2025-05-22,0.7576,Anthropic
-claude-sonnet-4-20250514,2025-05-22,0.6667,Anthropic
-claude-opus-4-20250514,2025-05-22,0.6919,Anthropic
-mistral-medium-2505,2025-05-07,0.5953,Mistral AI
-o4-mini-2025-04-16_high,2025-04-16,0.7961,OpenAI
-o3-2025-04-16_high,2025-04-16,0.8182,OpenAI
-gpt-4.1-mini-2025-04-14,2025-04-14,0.6585,OpenAI
-gpt-4.1-nano-2025-04-14,2025-04-14,0.4893,OpenAI
-gpt-4.1-2025-04-14,2025-04-14,0.6692,OpenAI
-qwq-plus,2025-04-08,0.654,Alibaba
-grok-3-mini-beta_low,2025-04-09,0.7626,xAI
-Llama-4-Scout-17B-16E-Instruct,2025-04-05,0.5183,Meta AI
-Llama-4-Maverick-17B-128E-Instruct-FP8,2025-04-05,0.6698,Meta AI
-qwen-turbo-2024-11-01,2024-11-01,0.4179,Alibaba
-qwen-plus-2025-01-25,2025-01-25,0.4811,Alibaba
-qwen-max-2025-01-25,2025-01-25,0.5612,Alibaba
-DeepSeek-V3-0324,2025-03-24,0.6761,DeepSeek
-gemini-2.5-pro-exp-03-25,2025-03-25,0.8384,Google DeepMind
-mistral-small-2503,2025-03-17,0.4747,Mistral AI
-claude-3-5-haiku-20241022,2024-10-22,0.3813,Anthropic
-gemini-1.5-flash-8b-001,2024-10-03,0.3295,Google DeepMind
-DeepSeek-R1-Distill-Qwen-14B,2025-01-20,0.447,DeepSeek
-claude-3-7-sonnet-20250219_32K,2025-02-24,0.7677,Anthropic
-DeepSeek-R1-Distill-Llama-70B,2025-01-20,0.5574,DeepSeek
-gpt-4.5-preview-2025-02-27,2025-02-27,0.6869,OpenAI
-gpt-4-turbo-2024-04-09,2024-04-09,0.4659,OpenAI
-claude-3-7-sonnet-20250219_16K,2025-02-24,0.7677,Anthropic
-mistral-large-2411,2024-11-18,0.5133,Mistral AI
-claude-3-7-sonnet-20250219,2025-02-24,0.6604,Anthropic
-o1-2024-12-17_high,2024-12-17,0.7677,OpenAI
-o1-mini-2024-09-12_high,2024-09-12,0.6237,OpenAI
-o3-mini-2025-01-31_high,2025-01-31,0.7702,OpenAI
-gemini-2.0-pro-exp-02-05,2025-02-05,0.6566,Google DeepMind
-gemini-2.0-flash-thinking-exp-01-21,2025-01-21,0.5707,"Google DeepMind,Google"
-gemini-2.0-flash-001,2025-02-05,0.6414,"Google DeepMind,Google"
-gpt-4o-2024-11-20,2024-11-20,0.4789,OpenAI
-phi-4,2024-12-12,0.5606,Microsoft Research
-Phi-3-medium-128k-instruct,2024-04-23,0.2759,Microsoft
-o3-mini-2025-01-31_medium,2025-01-31,0.7427,OpenAI
-mistral-small-2501,2025-01-25,0.453,Mistral AI
-qwen2.5-32b-instruct,2024-09-17,0.4609,Alibaba
-gemini-1.5-flash-001,2024-05-23,0.4037,Google DeepMind
-claude-2.0,2023-07-11,0.3466,Anthropic
-claude-3-opus-20240229,2024-02-29,0.4716,Anthropic
-o1-mini-2024-09-12_medium,2024-09-12,0.595,OpenAI
-gpt-4o-2024-08-06,2024-08-06,0.4921,OpenAI
-o1-preview-2024-09-12,2024-09-12,0.5032,OpenAI
-claude-3-sonnet-20240229,2024-02-29,0.4059,Anthropic
-claude-3-5-sonnet-20241022,2024-10-22,0.553,Anthropic
-gpt-4-0125-preview,2024-01-25,0.4227,OpenAI
-claude-2.1,2023-11-21,0.3295,Anthropic
-gemma-2-27b-it,2024-06-24,0.3649,Google DeepMind
-claude-3-haiku-20240307,2024-03-07,0.363,Anthropic
-claude-3-5-sonnet-20240620,2024-06-20,0.5404,Anthropic
-gpt-4o-2024-05-13,2024-05-13,0.489,OpenAI
-gemini-1.5-flash-002,2024-09-24,0.4732,Google DeepMind
-gpt-4-0613,2023-06-13,0.3065,OpenAI
-gemma-2-9b-it,2024-06-24,0.2746,Google DeepMind
-gpt-3.5-turbo-1106,2023-11-06,0.2803,OpenAI
-gemini-1.5-pro-001,2024-05-14,0.4586,Google DeepMind
-gpt-4-1106-preview,2023-11-06,0.4236,OpenAI
-gpt-4o-mini-2024-07-18,2024-07-18,0.3772,OpenAI
-gemini-1.5-pro-002,2024-09-24,0.5723,Google DeepMind
-gpt-3.5-turbo-0125,2024-01-25,0.2718,OpenAI
-Llama-3.1-70B-Instruct,2024-07-23,0.4419,Meta AI
-Llama-3.1-405B-Instruct,2024-07-23,0.5092,Meta AI
-Yi-1.5-34B-Chat,2024-05-13,0.3198,01.AI
-Yi-34B-Chat,2023-11-22,0.1474,01.AI
-grok-2-1212,2024-12-12,0.5379,xAI
-qwen2-72b-instruct,2024-06-07,0.4078,Alibaba
-qwen1.5-72b-chat,2024-02-04,0.2882,Alibaba
-qwen1.5-32b-chat,2024-04-03,0.3074,Alibaba
-Hermes-2-Theta-Llama-3-70B,2024-06-20,0.3747,"Nous Research,Arcee AI"
-Llama-2-70b-chat-hf,2023-07-18,0.2633,Meta AI
-Meta-Llama-3-70B-Instruct,2024-04-18,0.4056,Meta AI
-Meta-Llama-3-8B-Instruct,2024-04-18,0.2607,Meta AI
-Mistral-7B-Instruct-v0.3,2024-05-27,0.1518,Mistral AI
-deepseek-llm-67b-chat,2023-11-29,0.2462,DeepSeek
-Mixtral-8x7B-Instruct-v0.1,2023-12-11,0.3059,Mistral AI
-qwen2.5-72b-instruct,2024-09-19,0.4915,Alibaba
-WizardLM-2-8x22B,2024-04-15,0.4343,Microsoft
-dbrx-instruct,2024-03-27,0.3289,Databricks
-gemini-1.0-pro-001,2023-12-13,0.3396,Google DeepMind
-ministral-3b-2410,2024-10-16,0.2525,Mistral AI
-mistral-large-2402,2024-02-26,0.3876,Mistral AI
-open-mixtral-8x22b,2024-04-17,0.3406,Mistral AI
-ministral-8b-2410,2024-10-16,0.2715,Mistral AI
-mistral-large-2407,2024-07-24,0.4902,Mistral AI
-open-mixtral-8x7b,2023-12-11,0.2983,Mistral AI
-open-mistral-7b,2023-09-27,0.1323,Mistral AI
-open-mistral-nemo-2407,2024-07-18,0.2989,Mistral AI
-Llama-3.2-90B-Vision-Instruct,2024-09-24,0.4104,Meta AI
-Llama-3.1-Tulu-3-70B-DPO,2024-11-21,0.4628,"Allen Institute for AI,University of Washington"
-Eurus-2-7B-PRIME,2024-12-31,0.339,"Tsinghua University,University of Illinois Urbana-Champaign (UIUC),Shanghai AI Lab,Peking University,Shanghai Jiao Tong University,CUHK Shenzhen Research Institute"
-Llama-3.3-70B-Instruct,2024-12-06,0.4744,Meta AI
-o1-2024-12-17_medium,2024-12-17,0.7576,OpenAI
-DeepSeek-V3,2024-12-26,0.5653,DeepSeek
-grok-4-0709,2025-07-09,0.87,xAI
+model_version,release_date,score,stderr,organization
+mistral-large-4-0-oss_high,2026-10-29,0.9015,0.0181,Mistral AI
+gpt-6.1-terra_max,2026-10-26,0.9432,0.0149,OpenAI
+deepseek-v4.1-flash-1017_max,2026-10-17,0.9318,0.0157,DeepSeek
+Muse-Spark-Open-816B-A42B_xhigh,2026-10-15,0.8857,0.0187,Meta AI
+gemini-4-argon_high,2026-09-30,0.964,0.0119,Google DeepMind
+mistral-large-4-0_high,2026-10-06,0.8807,0.0193,Mistral AI
+deepseek-v4.1-flash_max,2026-09-09,0.8984,0.0173,DeepSeek
+claude-haiku-5-5_max,2026-10-07,0.8965,0.0198,Anthropic
+gpt-6.1-sol_max,2026-09-29,0.9539,0.0138,OpenAI
+claude-sonnet-5-5_max,2026-09-28,0.9558,0.0137,Anthropic
+gpt-6-luna_max,2026-09-22,0.9047,0.0185,OpenAI
+grok-4.7_xhigh,2026-09-21,0.9274,0.0155,xAI
+gpt-6-sol_max,2026-09-22,0.9432,0.0149,OpenAI
+claude-opus-5-5_max,2026-09-22,0.9059,0.0194,Anthropic
+qwen3.8-max-0902_xhigh,2026-09-01,0.923,0.0172,Alibaba
+gemini-3.8-flash_high,2026-09-02,0.9539,0.014,Google DeepMind
+granite-4.0-micro,2025-10-02,0.2828,0.0182,
+seed-oss-36b-instruct,2025-08-20,0.7153,0.0274,
+Qwen3-32B_none,2025-04-29,0.541,0.0281,Alibaba
+qwen3-30b-a3b-thinking-2507,2025-07-30,0.7008,0.0283,Alibaba
+qwen3-30b-a3b-instruct-2507,2025-07-29,0.5562,0.0288,Alibaba
+Qwen3-30B-A3B_none,2025-04-29,0.5038,0.0283,Alibaba
+Qwen3-30B-A3B,2025-04-29,0.6168,0.0297,Alibaba
+qwen2.5-7b-instruct,2024-09-19,0.3548,0.0229,Alibaba
+mistral-small-3.1-2503,2025-03-17,0.4192,0.0235,Mistral AI
+mistral-small-3-2501,2025-01-30,0.4729,0.0279,Mistral AI
+magistral-small-2509,2025-09-18,0.476,0.026,Mistral AI
+Llama-3.2-1B-Instruct,2024-09-24,0.2393,0.0163,Meta AI
+glm-4.7-flash_none,,0.4514,0.0218,
+glm-4.7-flash,,0.6054,0.0293,
+gpt-6-astra_max,2026-09-03,0.9577,0.0137,OpenAI
+granite-4.0-1b,2025-10-28,0.2399,0.0162,
+qwen3.5-35b-a3b_none,2026-02-24,0.8119,0.0232,Alibaba
+qwen3.5-35b-a3b,2026-02-24,0.8346,0.0218,Alibaba
+qwen3-4b-instruct-2507,2025-08-06,0.4583,0.0285,
+qwen3-4b_none,2025-04-29,0.4356,0.0269,Alibaba
+qwen3-4b,2025-04-29,0.5234,0.0301,Alibaba
+Qwen3-32B,2025-04-29,0.6572,0.0279,Alibaba
+qwen3-14b_none,2025-04-29,0.5341,0.0275,Alibaba
+qwen3-14b,2025-04-29,0.6376,0.0293,Alibaba
+qwen3-1.7b_none,2025-04-29,0.3062,0.0226,Alibaba
+qwen3-1.7b,2025-04-29,0.3801,0.0275,Alibaba
+mistral-small-3.2-2506,2025-06-20,0.4905,0.0277,Mistral AI
+granite-4.0-350m,2025-10-28,0.1124,0.0091,
+gemma-3-4b-it,2025-03-12,0.2323,0.0187,Google DeepMind
+gemma-3-1b-it,2025-03-12,0.1995,0.0152,Google DeepMind
+gemma-3-12b-it,2025-03-12,0.3946,0.0253,Google DeepMind
+DeepSeek-R1-Distill-Qwen-32B,2025-01-20,0.6414,0.0275,DeepSeek
+DeepSeek-R1-Distill-Qwen-1.5B,2025-01-20,0.3359,0.0206,DeepSeek
+deepseek-r1-0528-qwen3-8b,2025-05-28,0.0928,0.0107,
+QwQ-32B,2025-03-05,0.6534,0.0281,Alibaba
+Llama-3.1-8B-Instruct,2024-07-23,0.2696,0.0186,Meta AI
+qwen3.5-9B_none,2026-02-24,0.7891,0.0239,Alibaba
+qwen3.5-9B,2026-02-24,0.7898,0.0237,Alibaba
+qwen3-8b_none,2025-04-28,0.4747,0.0262,Alibaba
+qwen3-8b,2025-04-28,0.5676,0.0293,Alibaba
+gemma-3-27b-it,2025-03-12,0.4773,0.027,Google DeepMind
+gpt-oss-20b_medium,2025-08-05,0.608,0.0249,OpenAI
+gpt-oss-20b_low,2025-08-05,0.5316,0.025,OpenAI
+glm-5.3-flash_max,2026-08-20,0.9015,0.0172,Z.ai (Zhipu AI)
+glm-5.3_max,2026-08-14,0.9091,0.0159,Z.ai (Zhipu AI)
+deepseek-v4-pro-0813_max,2026-08-13,0.9167,0.0152,DeepSeek
+gemini-3.7-flash_high,2026-08-13,0.9482,0.0135,Google DeepMind
+inkling-small_xhigh,2026-07-15,0.8851,0.0191,Thinking Machines
+grok-4.6_xhigh,2026-08-12,0.9318,0.0152,xAI
+grok-4.6_high,2026-08-12,0.94,0.0145,xAI
+nemotron-3-ultra,2026-06-04,0.8535,0.0252,Nvidia
+MiniMax-M3_none,2026-06-01,0.8131,0.0278,MiniMax
+MiniMax-M3,2026-06-01,0.9091,0.0205,MiniMax
+glm-5.2_none,2026-06-16,0.7121,0.0323,Z.ai (Zhipu AI)
+glm-5.2_low,2026-06-16,0.8788,0.0233,Z.ai (Zhipu AI)
+glm-5.1,2026-04-07,0.899,0.0215,Z.ai (Zhipu AI)
+gpt-5.4-mini-2026-03-17_xhigh,2026-03-17,0.8687,0.0241,OpenAI
+gpt-5.6-sol_none,2026-07-09,0.8283,0.0269,OpenAI
+gpt-5.5_none,2026-04-23,0.7727,0.0299,OpenAI
+kimi-k3_low,2026-07-16,0.8485,0.0255,Moonshot
+kimi-k3_high,2026-07-16,0.9192,0.0194,Moonshot
+gpt-5.6-terra_none,2026-07-09,0.7727,0.0299,OpenAI
+gpt-5.4-mini-2026-03-17_none,2026-03-17,0.6414,0.0342,OpenAI
+qwen3.6-max-preview,2026-04-20,0.8737,0.0237,Alibaba
+gpt-5.6-sol_low,2026-07-09,0.899,0.0215,OpenAI
+qwen3.7-max,2026-05-19,0.9091,0.0205,Alibaba
+o3-2025-04-16_medium,2025-04-16,0.8081,0.0281,OpenAI
+gpt-5.1-2025-11-13_none,2025-11-13,0.6667,0.0336,OpenAI
+kimi-k2.7-code,2026-06-12,0.8788,0.0233,Moonshot
+gpt-5.6-luna_none,2026-07-09,0.6364,0.0343,OpenAI
+gpt-5.6-terra_low,2026-07-09,0.8737,0.0237,OpenAI
+qwen3.6-plus,2026-03-31,0.8838,0.0228,Alibaba
+o4-mini-2025-04-16_medium,2025-04-16,0.7778,0.0296,OpenAI
+qwen3.6-27b,2026-04-22,0.8586,0.0248,Alibaba
+qwen3.6-27b_none,2026-04-22,0.8485,0.0255,Alibaba
+qwen3.5-397b-a17b,2026-02-13,0.8586,0.0248,Alibaba
+qwen3.5-397b-a17b_none,2026-02-13,0.8636,0.0245,Alibaba
+qwen3.5-plus,2026-02-16,0.8485,0.0255,Alibaba
+gemini-3.6-flash_minimal,2026-07-21,0.8586,0.0248,Google DeepMind
+qwen3.6-35b-a3b,2026-04-14,0.8384,0.0262,Alibaba
+qwen3.6-35b-a3b_none,2026-04-14,0.8485,0.0255,Alibaba
+qwen3.6-flash,2026-04-27,0.8333,0.0266,Alibaba
+gpt-5.6-luna_low,2026-07-09,0.8232,0.0272,OpenAI
+qwen3.7-plus,2026-06-02,0.8788,0.0233,Alibaba
+qwen3.7-plus_none,2026-06-02,0.8182,0.0275,Alibaba
+qwen3.7-flash,2026-07-27,0.8232,0.0272,Alibaba
+qwen3.7-flash_none,2026-07-27,0.8081,0.0281,Alibaba
+gpt-5.4-nano-2026-03-17_none,2026-03-17,0.5556,0.0354,OpenAI
+qwen3.5-flash,2026-02-25,0.8232,0.0272,Alibaba
+gpt-5-mini-2025-08-07_minimal,2025-08-07,0.7172,0.0321,OpenAI
+gpt-5.4-nano-2026-03-17_low,2026-03-17,0.7222,0.0319,OpenAI
+gemma-4-31b-it_minimal,2026-04-02,0.7576,0.0305,Google DeepMind
+gemma-4-26b-a4b-it_minimal,2026-04-02,0.7323,0.0315,Google DeepMind
+deepseek-v4-pro_none,2026-04-24,0.7323,0.0315,DeepSeek
+deepseek-v4-pro_high,2026-04-24,0.9091,0.0205,DeepSeek
+claude-opus-4-6_max,2026-02-05,0.8838,0.0228,Anthropic
+gpt-oss-20b_high,2025-08-05,0.4596,0.0355,OpenAI
+gemini-3.6-flash_low,2026-07-21,0.8636,0.0245,Google DeepMind
+gemini-3.5-flash-lite_low,2026-07-21,0.7576,0.0305,Google DeepMind
+gemini-3.5-flash-lite_minimal,2026-07-21,0.7424,0.0312,Google DeepMind
+gemini-3.5-flash-lite_high,2026-07-21,0.8333,0.0266,Google DeepMind
+gemini-3.5-flash_low,2026-05-19,0.8889,0.0224,Google DeepMind
+gemini-3.1-pro-preview_high,2026-02-19,0.9444,0.0163,Google DeepMind
+gemini-3.1-flash-lite_minimal,2026-03-03,0.7374,0.0314,Google
+gemini-3.1-flash-lite_high,2026-03-03,0.8182,0.0275,Google
+gemini-3.1-flash-lite_low,2026-03-03,0.7424,0.0312,Google
+gemini-3-flash-preview_high,2025-12-17,0.8939,0.0219,Google DeepMind
+claude-sonnet-5_max,2026-06-30,0.803,0.0283,Anthropic
+claude-sonnet-4-6_max,2026-02-17,0.7879,0.0291,Anthropic
+claude-opus-5,2026-07-24,0.9293,0.0183,Anthropic
+claude-opus-5_low,2026-07-24,0.8788,0.0233,Anthropic
+claude-opus-4-8_none,2026-05-28,0.8535,0.0252,Anthropic
+claude-opus-4-8_low,2026-05-28,0.8838,0.0228,Anthropic
+claude-opus-4-7_max,2026-04-16,0.8636,0.0245,Anthropic
+claude-fable-5_max,2026-06-09,0.8586,0.0248,Anthropic
+claude-fable-5_low,2026-06-09,0.7879,0.0291,Anthropic
+claude-fable-5_high,2026-06-09,0.8333,0.0266,Anthropic
+magistral-small-2506,2025-06-10,0.5606,0.0354,Mistral AI
+Inkling_xhigh,2026-07-15,0.8826,0.0194,Thinking Machines
+qwen3.8-max_xhigh,2026-08-02,0.9268,0.0169,Alibaba
+gpt-5.5-instant,2026-05-05,0.8251,0.0225,OpenAI
+deepseek-v4-flash-0731_max,2026-07-31,0.9104,0.0177,DeepSeek
+gemini-3.6-flash_high,2026-07-21,0.9413,0.014,Google DeepMind
+claude-opus-5_max,2026-07-24,0.9388,0.0148,Anthropic
+o1-2024-12-17_low,2024-12-17,0.7424,0.0312,OpenAI
+gpt-5-2025-08-07_minimal,2025-08-07,0.7172,0.0321,OpenAI
+o3-mini-2025-01-31_low,2025-01-31,0.6818,0.0332,OpenAI
+kimi-k3_max,2026-07-16,0.9312,0.0149,Moonshot
+deepseek-chat,2025-12-01,0.7121,0.0323,DeepSeek
+o3-2025-04-16_low,2025-04-16,0.798,0.0286,OpenAI
+gpt-5.4-2026-03-05_medium,2026-03-05,0.8889,0.0224,OpenAI
+gpt-5.4-2026-03-05_none,2026-03-05,0.7475,0.031,OpenAI
+gpt-5.4-2026-03-05_high,2026-03-05,0.899,0.0215,OpenAI
+gpt-5.4-2026-03-05_low,2026-03-05,0.8485,0.0255,OpenAI
+gemini-3.5-flash_minimal,2026-05-19,0.8636,0.0245,Google DeepMind
+gpt-5-nano-2025-08-07_low,2025-08-07,0.5758,0.0352,OpenAI
+claude-sonnet-4-6_high,2026-02-17,0.8333,0.0266,Anthropic
+gpt-5-nano-2025-08-07_minimal,2025-08-07,0.4848,0.0356,OpenAI
+gpt-5.2-2025-12-11_none,2025-12-11,0.7323,0.0315,OpenAI
+claude-sonnet-4-6_medium,2026-02-17,0.8333,0.0266,Anthropic
+grok-4.20-0309-reasoning,2026-02-17,0.8933,0.0186,xAI
+o4-mini-2025-04-16_low,2025-04-16,0.7525,0.0307,OpenAI
+gpt-5.6-terra_max,2026-07-09,0.9331,0.0154,OpenAI
+gpt-5.6-luna_max,2026-07-09,0.916,0.0173,OpenAI
+gpt-5.6-sol_max,2026-07-09,0.935,0.0157,OpenAI
+grok-4.5_high,2026-07-08,0.9343,0.0143,xAI
+claude-sonnet-5_xhigh,2026-06-30,0.9053,0.0178,Anthropic
+glm-5.2_max,2026-06-16,0.9186,0.0161,Z.ai (Zhipu AI)
+grok-4.3_high,2026-04-17,0.8883,0.0196,xAI
+deepseek-v4-pro_max,2026-04-24,0.8965,0.0175,DeepSeek
+claude-opus-4-8_max,2026-05-28,0.9104,0.0192,Anthropic
+gemini-3.5-flash_high,2026-05-19,0.928,0.0164,Google DeepMind
+gpt-5.5_low,2026-04-23,0.9066,0.0175,OpenAI
+kimi-k2.6,2026-04-20,0.9078,0.0172,Moonshot
+gpt-5.5-pro-pre-release_xhigh,2026-04-23,0.9392,0.0158,OpenAI
+gpt-5.5-pre-release_xhigh,2026-04-23,0.94,0.0155,OpenAI
+claude-opus-4-7_xhigh,2026-04-16,0.9015,0.0185,Anthropic
+gpt-5.4-mini-2026-03-17_high,2026-03-17,0.8359,0.0223,OpenAI
+gpt-5.4-nano-2026-03-17_high,2026-03-17,0.7847,0.0244,OpenAI
+muse-spark,2026-04-08,0.898,0.022,Meta AI
+gpt-5.4-pro-2026-03-05_xhigh,2026-03-05,0.946,0.016,OpenAI
+gpt-5.4-2026-03-05_xhigh,2026-03-05,0.933,0.018,OpenAI
+claude-sonnet-4-6_32K,2026-02-17,0.8737,0.02,Anthropic
+gemini-3.1-pro-preview,2026-02-19,0.941,0.017,Google DeepMind
+glm-5,2026-02-11,0.8782,0.0234,Z.ai (Zhipu AI)
+claude-opus-4-6_32K,2026-02-05,0.9053,0.0169,Anthropic
+claude-opus-4-6_64K,2026-02-05,0.8876,0.0194,Anthropic
+kimi-k2p5,2026-01-27,0.876,0.019,Moonshot
+glm-4.7,2025-12-22,0.8333,0.0237,Z.ai (Zhipu AI)
+gemini-3-flash-preview,2025-12-17,0.8321,0.019,Google DeepMind
+deepseek-reasoner,2025-12-01,0.8342,0.0202,DeepSeek
+gpt-5.2-2025-12-11_xhigh,2025-12-11,0.914,0.018,OpenAI
+Qwen3-235B-A22B-Thinking-2507,2025-07-25,0.8005,0.026,Alibaba
+gpt-oss-120b_high,2025-08-05,0.7576,0.0274,OpenAI
+gpt-5.2-2025-12-11_high,2025-12-11,0.8819,0.0191,OpenAI
+gpt-5.2-2025-12-11_medium,2025-12-11,0.8788,0.0191,OpenAI
+gpt-5.2-2025-12-11_low,2025-12-11,0.827,0.0227,OpenAI
+claude-opus-4-5-20251101_16K,2025-11-24,0.8548,0.0215,Anthropic
+claude-opus-4-5-20251101_32K,2025-11-24,0.8605,0.0207,Anthropic
+claude-opus-4-5-20251101,2025-11-24,0.8068,0.0239,Anthropic
+gemini-3-pro-preview,2025-11-18,0.9261,0.0165,Google DeepMind
+gpt-5.1-2025-11-13_medium,2025-11-13,0.8504,0.0213,OpenAI
+gemini-2.5-pro,2025-06-17,0.8529,0.0212,Google DeepMind
+gpt-5.1-2025-11-13_high,2025-11-13,0.8763,0.0188,OpenAI
+kimi-k2-thinking-turbo,2025-11-06,0.8422,0.0209,Moonshot
+gpt-5-nano-2025-08-07_high,2025-08-07,0.6944,0.0276,OpenAI
+gpt-5-mini-2025-08-07_high,2025-08-07,0.75,0.0228,OpenAI
+gpt-5-2025-08-07_high,2025-08-07,0.8617,0.0208,OpenAI
+claude-sonnet-4-5-20250929_16K,2025-09-29,0.7879,0.0291,Anthropic
+claude-sonnet-4-5-20250929_59K,2025-09-29,0.8232,0.0272,Anthropic
+gpt-4-0314,2023-03-14,0.3573,0.0236,OpenAI
+claude-haiku-4-5-20251001_32K,2025-10-15,0.7121,0.0323,Anthropic
+claude-sonnet-4-5-20250929_32K,2025-09-29,0.8173,0.0276,Anthropic
+claude-haiku-4-5-20251001,2025-10-15,0.6048,0.0282,Anthropic
+qwen3-max-2025-09-23,2025-09-24,0.726,0.0273,Alibaba
+claude-sonnet-4-5-20250929,2025-09-29,0.7374,0.0314,Anthropic
+gpt-5-mini-2025-08-07_medium,2025-08-07,0.7165,0.0232,OpenAI
+gpt-5-2025-08-07_medium,2025-08-07,0.8535,0.0213,OpenAI
+gpt-5-nano-2025-08-07_medium,2025-08-07,0.6742,0.0266,OpenAI
+claude-opus-4-1-20250805_27K,2025-08-05,0.7677,0.0301,Anthropic
+claude-opus-4-1-20250805_16K,2025-08-05,0.7727,0.0299,Anthropic
+claude-opus-4-1-20250805,2025-08-05,0.7323,0.0315,Anthropic
+gemini-2.5-pro-preview-06-05,2025-06-05,0.8485,0.0255,Google DeepMind
+qwen3-235b-a22b,2025-04-29,0.7071,0.0271,Alibaba
+gemini-2.5-pro-preview-05-06,2025-05-06,0.6667,0.0336,Google DeepMind
+DeepSeek-R1-0528,2025-05-28,0.7633,0.024,DeepSeek
+claude-3-7-sonnet-20250219_64K,2025-02-24,0.7973,0.0265,Anthropic
+grok-3-mini-beta_high,2025-04-09,0.7551,0.0277,xAI
+DeepSeek-R1,2025-01-20,0.7172,0.0307,DeepSeek
+claude-sonnet-4-20250514_59K,2025-05-22,0.7919,0.0267,Anthropic
+grok-3-beta,2025-04-09,0.7576,0.0269,xAI
+claude-sonnet-4-20250514_32K,2025-05-22,0.7828,0.0294,Anthropic
+claude-opus-4-20250514_16K,2025-05-22,0.7626,0.0303,Anthropic
+claude-sonnet-4-20250514_16K,2025-05-22,0.7576,0.0305,Anthropic
+claude-sonnet-4-20250514,2025-05-22,0.6667,0.0336,Anthropic
+claude-opus-4-20250514,2025-05-22,0.6919,0.0329,Anthropic
+mistral-medium-2505,2025-05-07,0.5953,0.0282,Mistral AI
+o4-mini-2025-04-16_high,2025-04-16,0.7961,0.024,OpenAI
+o3-2025-04-16_high,2025-04-16,0.8182,0.0213,OpenAI
+gpt-4.1-mini-2025-04-14,2025-04-14,0.6585,0.0271,OpenAI
+gpt-4.1-nano-2025-04-14,2025-04-14,0.4893,0.0248,OpenAI
+gpt-4.1-2025-04-14,2025-04-14,0.6692,0.0282,OpenAI
+qwq-plus,2025-04-08,0.654,0.0285,Alibaba
+grok-3-mini-beta_low,2025-04-09,0.7626,0.0303,xAI
+Llama-4-Scout-17B-16E-Instruct,2025-04-05,0.5183,0.0315,Meta AI
+Llama-4-Maverick-17B-128E-Instruct-FP8,2025-04-05,0.6698,0.0282,Meta AI
+qwen-turbo-2024-11-01,2024-11-01,0.4179,0.0262,Alibaba
+qwen-plus-2025-01-25,2025-01-25,0.4811,0.0271,Alibaba
+qwen-max-2025-01-25,2025-01-25,0.5612,0.0279,Alibaba
+DeepSeek-V3-0324,2025-03-24,0.6761,0.0268,DeepSeek
+gemini-2.5-pro-exp-03-25,2025-03-25,0.8384,0.0262,Google DeepMind
+mistral-small-2503,2025-03-17,0.4747,0.0276,Mistral AI
+claude-3-5-haiku-20241022,2024-10-22,0.3813,0.0264,Anthropic
+gemini-1.5-flash-8b-001,2024-10-03,0.3295,0.0242,Google DeepMind
+DeepSeek-R1-Distill-Qwen-14B,2025-01-20,0.447,0.0286,DeepSeek
+claude-3-7-sonnet-20250219_32K,2025-02-24,0.7677,0.0301,Anthropic
+DeepSeek-R1-Distill-Llama-70B,2025-01-20,0.5574,0.0297,DeepSeek
+gpt-4.5-preview-2025-02-27,2025-02-27,0.6869,0.033,OpenAI
+gpt-4-turbo-2024-04-09,2024-04-09,0.4659,0.0266,OpenAI
+claude-3-7-sonnet-20250219_16K,2025-02-24,0.7677,0.0301,Anthropic
+mistral-large-2411,2024-11-18,0.5133,0.0269,Mistral AI
+claude-3-7-sonnet-20250219,2025-02-24,0.6604,0.0267,Anthropic
+o1-2024-12-17_high,2024-12-17,0.7677,0.0301,OpenAI
+o1-mini-2024-09-12_high,2024-09-12,0.6237,0.0274,OpenAI
+o3-mini-2025-01-31_high,2025-01-31,0.7702,0.0259,OpenAI
+gemini-2.0-pro-exp-02-05,2025-02-05,0.6566,0.0338,Google DeepMind
+gemini-2.0-flash-thinking-exp-01-21,2025-01-21,0.5707,0.0353,"Google DeepMind,Google"
+gemini-2.0-flash-001,2025-02-05,0.6414,0.0274,"Google DeepMind,Google"
+gpt-4o-2024-11-20,2024-11-20,0.4789,0.0263,OpenAI
+phi-4,2024-12-12,0.5606,0.0259,Microsoft Research
+Phi-3-medium-128k-instruct,2024-04-23,0.2759,0.0161,Microsoft
+o3-mini-2025-01-31_medium,2025-01-31,0.7427,0.0254,OpenAI
+mistral-small-2501,2025-01-25,0.453,0.0248,Mistral AI
+qwen2.5-32b-instruct,2024-09-17,0.4609,0.026,Alibaba
+gemini-1.5-flash-001,2024-05-23,0.4037,0.0239,Google DeepMind
+claude-2.0,2023-07-11,0.3466,0.0251,Anthropic
+claude-3-opus-20240229,2024-02-29,0.4716,0.0264,Anthropic
+o1-mini-2024-09-12_medium,2024-09-12,0.595,0.028,OpenAI
+gpt-4o-2024-08-06,2024-08-06,0.4921,0.026,OpenAI
+o1-preview-2024-09-12,2024-09-12,0.5032,0.0283,OpenAI
+claude-3-sonnet-20240229,2024-02-29,0.4059,0.0239,Anthropic
+claude-3-5-sonnet-20241022,2024-10-22,0.553,0.0282,Anthropic
+gpt-4-0125-preview,2024-01-25,0.4227,0.0268,OpenAI
+claude-2.1,2023-11-21,0.3295,0.0232,Anthropic
+gemma-2-27b-it,2024-06-24,0.3649,0.0239,Google DeepMind
+claude-3-haiku-20240307,2024-03-07,0.363,0.0242,Anthropic
+claude-3-5-sonnet-20240620,2024-06-20,0.5404,0.0275,Anthropic
+gpt-4o-2024-05-13,2024-05-13,0.489,0.0263,OpenAI
+gemini-1.5-flash-002,2024-09-24,0.4732,0.0277,Google DeepMind
+gpt-4-0613,2023-06-13,0.3065,0.0234,OpenAI
+gemma-2-9b-it,2024-06-24,0.2746,0.023,Google DeepMind
+gpt-3.5-turbo-1106,2023-11-06,0.2803,0.0187,OpenAI
+gemini-1.5-pro-001,2024-05-14,0.4586,0.0262,Google DeepMind
+gpt-4-1106-preview,2023-11-06,0.4236,0.0241,OpenAI
+gpt-4o-mini-2024-07-18,2024-07-18,0.3772,0.0241,OpenAI
+gemini-1.5-pro-002,2024-09-24,0.5723,0.028,Google DeepMind
+gpt-3.5-turbo-0125,2024-01-25,0.2718,0.0195,OpenAI
+Llama-3.1-70B-Instruct,2024-07-23,0.4419,0.0245,Meta AI
+Llama-3.1-405B-Instruct,2024-07-23,0.5092,0.0259,Meta AI
+Yi-1.5-34B-Chat,2024-05-13,0.3198,0.02,01.AI
+Yi-34B-Chat,2023-11-22,0.1474,0.0114,01.AI
+grok-2-1212,2024-12-12,0.5379,0.0271,xAI
+qwen2-72b-instruct,2024-06-07,0.4078,0.0257,Alibaba
+qwen1.5-72b-chat,2024-02-04,0.2882,0.0199,Alibaba
+qwen1.5-32b-chat,2024-04-03,0.3074,0.0202,Alibaba
+Hermes-2-Theta-Llama-3-70B,2024-06-20,0.3747,0.0248,"Nous Research,Arcee AI"
+Llama-2-70b-chat-hf,2023-07-18,0.2633,0.0199,Meta AI
+Meta-Llama-3-70B-Instruct,2024-04-18,0.4056,0.0262,Meta AI
+Meta-Llama-3-8B-Instruct,2024-04-18,0.2607,0.017,Meta AI
+Mistral-7B-Instruct-v0.3,2024-05-27,0.1518,0.0101,Mistral AI
+deepseek-llm-67b-chat,2023-11-29,0.2462,0.0136,DeepSeek
+Mixtral-8x7B-Instruct-v0.1,2023-12-11,0.3059,0.0194,Mistral AI
+qwen2.5-72b-instruct,2024-09-19,0.4915,0.0269,Alibaba
+WizardLM-2-8x22B,2024-04-15,0.4343,0.0232,Microsoft
+dbrx-instruct,2024-03-27,0.3289,0.0326,Databricks
+gemini-1.0-pro-001,2023-12-13,0.3396,0.0201,Google DeepMind
+ministral-3b-2410,2024-10-16,0.2525,0.0193,Mistral AI
+mistral-large-2402,2024-02-26,0.3876,0.0248,Mistral AI
+open-mixtral-8x22b,2024-04-17,0.3406,0.0207,Mistral AI
+ministral-8b-2410,2024-10-16,0.2715,0.0209,Mistral AI
+mistral-large-2407,2024-07-24,0.4902,0.0259,Mistral AI
+open-mixtral-8x7b,2023-12-11,0.2983,0.0191,Mistral AI
+open-mistral-7b,2023-09-27,0.1323,0.0099,Mistral AI
+open-mistral-nemo-2407,2024-07-18,0.2989,0.021,Mistral AI
+Llama-3.2-90B-Vision-Instruct,2024-09-24,0.4104,0.0229,Meta AI
+Llama-3.1-Tulu-3-70B-DPO,2024-11-21,0.4628,0.0241,"Allen Institute for AI,University of Washington"
+Eurus-2-7B-PRIME,2024-12-31,0.339,0.0211,"Tsinghua University,University of Illinois Urbana-Champaign (UIUC),Shanghai AI Lab,Peking University,Shanghai Jiao Tong University,CUHK Shenzhen Research Institute"
+Llama-3.3-70B-Instruct,2024-12-06,0.4744,0.0285,Meta AI
+o1-2024-12-17_medium,2024-12-17,0.7576,0.0305,OpenAI
+DeepSeek-V3,2024-12-26,0.5653,0.0276,DeepSeek
+grok-4-0709,2025-07-09,0.87,0.02,xAI

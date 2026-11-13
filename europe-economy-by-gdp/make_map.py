@@ -13,7 +13,7 @@ Setup:
     Google Chrome, Chromium or Edge must be installed (it renders the PNG).
 
 Run:
-    python make_map.py                 # rebuilds output.png from the snapshot
+    python make_map.py                 # rebuilds europe-economy-by-gdp.png from the snapshot
     python make_map.py --refresh       # downloads current figures first
     python make_map.py --out map.png --scale 1
 
@@ -689,7 +689,7 @@ def screenshot(page_html, out, scale):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[1])
-    parser.add_argument("--out", default=str(HERE / "output.png"))
+    parser.add_argument("--out", default=str(HERE / "europe-economy-by-gdp.png"))
     parser.add_argument("--scale", type=float, default=2, help="pixel density; 2 gives 2400 px wide")
     parser.add_argument("--skip-checks", action="store_true")
     parser.add_argument("--refresh", action="store_true", help="download current IMF and World Bank figures")
