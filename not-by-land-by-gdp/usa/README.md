@@ -6,6 +6,8 @@ A tiled map of the 50 states and D.C. with 1,000 squares, each one 0.1% of U.S. 
 
 The squares come from [popgrid](https://github.com/databites-tech/popgrid), using official BEA figures instead of the modelled GDP bundled with the package.
 
+Shared drawing code lives in [`../common.py`](../common.py).
+
 ## Run it
 
 Needs Python and an installed Chrome, Chromium or Edge, which renders the PNG.

@@ -8,8 +8,12 @@ Looking for the interactive projects (scrollytelling, explorers, atlases)? They'
 
 | | |
 |---|---|
-| [![The U.S. Economy, Sized by 2025 GDP, Not Land](us-economy-by-gdp/us-economy-by-gdp.png)](us-economy-by-gdp) | **[The U.S. Economy, Sized by 2025 GDP, Not Land](us-economy-by-gdp)**<br>A popgrid map with one square for each 0.1% of U.S. GDP. |
-| [![Europe's Economy, Sized by 2025 GDP, Not Land](europe-economy-by-gdp/europe-economy-by-gdp.png)](europe-economy-by-gdp) | **[Europe's Economy, Sized by 2025 GDP, Not Land](europe-economy-by-gdp)**<br>The same map for 40 European countries, in EU blue and gold. |
+| [![The U.S. Economy, Sized by 2025 GDP, Not Land](not-by-land-by-gdp/usa/us-economy-by-gdp.png)](not-by-land-by-gdp/usa) | **[The U.S. Economy, Sized by 2025 GDP, Not Land](not-by-land-by-gdp/usa)**<br>A popgrid map with one square for each 0.1% of U.S. GDP. Part of the [Not by land, by GDP](not-by-land-by-gdp) series. |
+| [![Europe's Economy, Sized by 2025 GDP, Not Land](not-by-land-by-gdp/europe/europe-economy-by-gdp.png)](not-by-land-by-gdp/europe) | **[Europe's Economy, Sized by 2025 GDP, Not Land](not-by-land-by-gdp/europe)**<br>The same map for 40 European countries, in EU blue and gold. |
+| [![Spain's Economy, Sized by 2024 GDP, Not Land](not-by-land-by-gdp/spain/spain-economy-by-gdp.png)](not-by-land-by-gdp/spain) | **[Spain's Economy, Sized by 2024 GDP, Not Land](not-by-land-by-gdp/spain)**<br>Madrid and Catalonia make 39% of Spain's GDP. |
+| [![Catalonia's Economy, Sized by 2023 GDP, Not Land](not-by-land-by-gdp/catalonia/catalonia-economy-by-gdp.png)](not-by-land-by-gdp/catalonia) | **[Catalonia's Economy, Sized by 2023 GDP, Not Land](not-by-land-by-gdp/catalonia)**<br>The Barcelonès has 0.5% of Catalonia's land and 35% of its GDP. |
+| [![The Netherlands' Economy, Sized by 2024 GDP, Not Land](not-by-land-by-gdp/netherlands/netherlands-economy-by-gdp.png)](not-by-land-by-gdp/netherlands) | **[The Netherlands' Economy, Sized by 2024 GDP, Not Land](not-by-land-by-gdp/netherlands)**<br>Three provinces make 58% of Dutch GDP. |
+| [![Mainland China's Economy, Sized by 2024 GDP, Not Land](not-by-land-by-gdp/china/china-economy-by-gdp.png)](not-by-land-by-gdp/china) | **[Mainland China's Economy, Sized by 2024 GDP, Not Land](not-by-land-by-gdp/china)**<br>Xinjiang, Tibet and Qinghai have 37% of the land and 2% of the GDP. |
 | [![The Price of AI](price-of-ai/price-of-ai.png)](price-of-ai) | **[The Price of AI](price-of-ai)**<br>GPT-4-level AI is nearly 700x cheaper, while the priciest flagships are only about 2x cheaper. |
 
 ## #30DayMapChallenge

@@ -27,24 +27,18 @@ BEA and the IMF revise their figures, so after --refresh check_claims() stops th
 script if a sentence on the graphic stops being true. Pass --skip-checks to render anyway.
 """
 
-import argparse
-import html
-import io
 import json
 import math
-import os
-import shutil
-import subprocess
-import tarfile
+import sys
 import zipfile
 from collections import Counter, defaultdict
 from pathlib import Path
 
 import pandas as pd
-import requests
 
 HERE = Path(__file__).resolve().parent
-CACHE = HERE / ".cache"
+sys.path.insert(0, str(HERE.parent))
+import common as c  # noqa: E402
 DATA_CSV = HERE / "data.csv"
 IMF_CSV = HERE / "imf_2025.csv"
 
@@ -58,13 +52,6 @@ URLS = {
     "bea.zip": "https://apps.bea.gov/regional/zip/SAGDP.zip",
     "census.csv": "https://www2.census.gov/programs-surveys/popest/datasets/2020-2025/state/totals/NST-EST2025-ALLDATA.csv",
     "imf.json": "https://www.imf.org/external/datamapper/api/v1/NGDPD?periods=2025",
-}
-
-# Fontsource package -> weights and styles to extract
-FONTS = {
-    "playfair-display": ("Playfair Display", "5.3.0", [(700, "normal"), (800, "normal"), (900, "normal")]),
-    "inter": ("Inter", "5.3.0", [(400, "normal"), (500, "normal"), (600, "normal"), (700, "normal")]),
-    "source-serif-4": ("Source Serif 4", "5.3.1", [(700, "normal")]),
 }
 
 ABBR = {
@@ -83,44 +70,6 @@ ABBR = {
 STATE = {v: k for k, v in ABBR.items()}
 
 
-# DOWNLOADS
-
-def fetch(name):
-    """Download a source file once and return its cached path."""
-    path = CACHE / name
-    if not path.exists():
-        print(f"Downloading {name}")
-        response = requests.get(URLS[name], timeout=180)
-        response.raise_for_status()
-        path.write_bytes(response.content)
-    return path
-
-
-def fetch_fonts():
-    """Extract the needed woff2 files from the Fontsource npm tarballs."""
-    folder = CACHE / "fonts"
-    folder.mkdir(exist_ok=True)
-    css = []
-    for package, (family, version, faces) in FONTS.items():
-        wanted = {f"{package}-latin-{weight}-{style}.woff2": (weight, style) for weight, style in faces}
-        if not all((folder / name).exists() for name in wanted):
-            print(f"Downloading font {family}")
-            url = f"https://registry.npmjs.org/@fontsource/{package}/-/{package}-{version}.tgz"
-            response = requests.get(url, timeout=180)
-            response.raise_for_status()
-            with tarfile.open(fileobj=io.BytesIO(response.content)) as archive:
-                for member in archive.getmembers():
-                    base = Path(member.name).name
-                    if base in wanted and member.isfile():
-                        (folder / base).write_bytes(archive.extractfile(member).read())
-        for name, (weight, style) in wanted.items():
-            css.append(
-                f"@font-face{{font-family:'{family}';font-weight:{weight};font-style:{style};"
-                f"src:url({(folder / name).as_uri()})}}"
-            )
-    return "".join(css)
-
-
 # DATA
 
 def load_states(refresh=False):
@@ -137,13 +86,13 @@ def load_states(refresh=False):
         states["per_person"] = states.gdp / states["pop"]
         return states.sort_values("gdp", ascending=False).reset_index(drop=True)
 
-    with zipfile.ZipFile(fetch("bea.zip")) as archive:
+    with zipfile.ZipFile(c.fetch("bea.zip", URLS["bea.zip"])) as archive:
         name = next(n for n in archive.namelist() if n.startswith("SAGDP2__ALL"))
         bea = pd.read_csv(archive.open(name), encoding="latin1", low_memory=False)
     total = bea[(bea.LineCode == 1) & bea.Unit.str.contains("Millions of current")].copy()
     total["gdp"] = pd.to_numeric(total["2025"]) * 1e6
 
-    census = pd.read_csv(fetch("census.csv"))
+    census = pd.read_csv(c.fetch("census.csv", URLS["census.csv"]))
     census = census[census.SUMLEV == 40][["NAME", "POPESTIMATE2025"]]
     census.columns = ["state", "pop"]
 
@@ -157,57 +106,13 @@ def load_states(refresh=False):
 
 
 def build_grids(states):
-    """
-    Run popgrid and return the squares as {"gdp": [...], "land": [...]},
-    with one [state, column, row] list per landmass.
-
-    popgrid 0.7.1 reads GDP from its bundled table (modelled PPP figures), so the
-    official BEA values are swapped in at the point where PopGrid loads its weights.
-    """
-    import popgrid.core as core
-    from popgrid import AreaGrid, PopGrid
-
-    official = dict(zip(states.state, states.gdp.astype(float)))
-    bundled = core.load_region_values
-
-    def bea_values(iso3, names, by="population", name_to_parent=None):
-        if by == "gdp":
-            return {name: official[name] for name in names}
-        return bundled(iso3, names, by=by, name_to_parent=name_to_parent)
-
-    core.load_region_values = bea_values
-    try:
-        gdp_grid = PopGrid("USA", n=1000, by="gdp").build()
-        land_grid = AreaGrid("USA", n=1000).build()
-    finally:
-        core.load_region_values = bundled
-
-    def squares(grid):
-        out = []
-        for landmass in grid._landmasses:
-            cells = landmass["cells"]
-            if cells is None or len(cells) == 0:
-                continue
-            bounds = cells.geometry.bounds
-            size = grid._cell_size
-            out.append([
-                [name, round(x / size), round(y / size)]
-                for name, x, y in zip(cells.region_name, bounds.minx, bounds.miny)
-            ])
-        return out
-
-    return {"gdp": squares(gdp_grid), "land": squares(land_grid)}
+    """popgrid squares, {"gdp": [...], "land": [...]}, with official BEA values as weights."""
+    return c.build_grids(c.admin1("USA"), dict(zip(states.state, states.gdp.astype(float))))
 
 
 def load_imf(refresh=False):
     """2025 GDP by country in USD billions, from the snapshot in imf_2025.csv."""
-    if not IMF_CSV.exists() or refresh:
-        raw = json.loads(fetch("imf.json").read_text())["values"]["NGDPD"]
-        rows = [(code, v["2025"]) for code, v in raw.items() if "2025" in v and len(code) == 3]
-        table = pd.DataFrame(rows, columns=["code", "gdp_2025_usd_billions"]).sort_values("code")
-        table.to_csv(IMF_CSV, index=False)
-    table = pd.read_csv(IMF_CSV, keep_default_na=False)
-    return dict(zip(table.code, table.gdp_2025_usd_billions.astype(float)))
+    return c.load_imf(IMF_CSV, 2025, refresh)
 
 
 def check_claims(states, grids, refresh=False):
@@ -251,10 +156,7 @@ def check_claims(states, grids, refresh=False):
         "U.S. is $90K per person": round(us_per_person / 1e3) == 90,
         "all states fit the $55K to $125K scale": states.per_person.min() >= PC_LOW and second_highest <= PC_HIGH,
     }
-    failed = [claim for claim, passed in checks.items() if not passed]
-    print(f"Claims checked: {len(checks) - len(failed)} of {len(checks)} pass")
-    if failed:
-        raise SystemExit("These claims no longer hold:\n  " + "\n  ".join(failed))
+    c.check_claims(checks)
 
 
 # DESIGN
@@ -266,6 +168,7 @@ INK = "#0C1F1A"
 MUTED = "#51625C"
 RAMP = ["#E9F4E4", "#B9DFB4", "#7CC394", "#3B9C74", "#14705A", "#0A4A40", "#052B26"]
 PC_LOW, PC_HIGH = 55_000, 125_000
+S = c.Style(INK, MUTED, RAMP, PC_LOW, PC_HIGH, currency="$")
 
 
 def X(col):
@@ -321,109 +224,6 @@ HERO = {
 }
 
 
-# SVG HELPERS
-
-def to_rgb(color):
-    return [int(color[i:i + 2], 16) for i in (1, 3, 5)]
-
-
-def mix(a, b, t):
-    return "#%02x%02x%02x" % tuple(round(x + (y - x) * t) for x, y in zip(to_rgb(a), to_rgb(b)))
-
-
-def scale_color(per_person):
-    position = max(0, min(1, (per_person - PC_LOW) / (PC_HIGH - PC_LOW))) * (len(RAMP) - 1)
-    i = min(int(position), len(RAMP) - 2)
-    return mix(RAMP[i], RAMP[i + 1], position - i)
-
-
-def luminance(color):
-    channels = [v / 255 for v in to_rgb(color)]
-    channels = [v / 12.92 if v <= 0.03928 else ((v + 0.055) / 1.055) ** 2.4 for v in channels]
-    return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2]
-
-
-def text_color(background):
-    """White or ink, whichever has more contrast against the background."""
-    on_white = 1.05 / (luminance(background) + 0.05)
-    on_ink = (luminance(background) + 0.05) / (luminance(INK) + 0.05)
-    return "#ffffff" if on_white > on_ink else INK
-
-
-def money(value):
-    return f"${value / 1e12:.2f}T" if value >= 1e12 else f"${value / 1e9:.0f}B"
-
-
-def text(x, y, content, size, weight=700, family="sans", fill=INK, anchor="middle",
-         extra="", halo=None, halo_width=3.5):
-    """SVG text. A halo in the square's color cuts the grid lines behind the label."""
-    face = {"sans": "Inter", "serif": "Playfair Display", "num": "Source Serif 4"}[family]
-    if halo:
-        extra += f' paint-order="stroke" stroke="{halo}" stroke-width="{halo_width}" stroke-linejoin="round"'
-    return (
-        f'<text x="{x:.1f}" y="{y:.1f}" font-family="{face}" font-size="{size}" font-weight="{weight}" '
-        f'fill="{fill}" text-anchor="{anchor}" style="font-feature-settings:\'lnum\' 1" {extra}>'
-        f"{html.escape(content)}</text>"
-    )
-
-
-def lines(x, y, rows, size, height, weight=500, family="sans", fill=INK, anchor="start"):
-    return "".join(text(x, y + i * height, row, size, weight, family, fill, anchor) for i, row in enumerate(rows))
-
-
-def leader(x1, y1, path_tail):
-    """Thin line with a white casing and a dot on the state."""
-    d = f"M{x1:.1f} {y1:.1f}{path_tail}"
-    return (
-        f'<path d="{d}" fill="none" stroke="#fff" stroke-width="2.6" stroke-opacity=".85"/>'
-        f'<path d="{d}" fill="none" stroke="{INK}" stroke-width=".9"/>'
-        f'<circle cx="{x1:.1f}" cy="{y1:.1f}" r="2.2" fill="#fff" stroke="{INK}" stroke-width=".9"/>'
-    )
-
-
-def draw_squares(cells, size, origin_x, origin_y, fill_of, gap=0.6, radius=1.2, border=1.7, tint=0.30):
-    """Draw {(col, row): state} as squares, with an outline around each state."""
-    px = lambda col: origin_x + col * size
-    py = lambda row: origin_y - (row + 1) * size
-    out = []
-    for (col, row), state in cells.items():
-        fill = fill_of(state)
-        out.append(
-            f'<rect x="{px(col):.2f}" y="{py(row):.2f}" width="{size}" height="{size}" fill="{mix(fill, "#ffffff", tint)}"/>'
-            f'<rect x="{px(col) + gap:.2f}" y="{py(row) + gap:.2f}" width="{size - 2 * gap:.2f}" '
-            f'height="{size - 2 * gap:.2f}" rx="{radius}" fill="{fill}"/>'
-        )
-    edges = []
-    for (col, row), state in cells.items():
-        x, y = px(col), py(row)
-        if cells.get((col - 1, row)) != state:
-            edges.append(f"M{x:.2f} {y:.2f}V{y + size:.2f}")
-        if cells.get((col + 1, row)) != state:
-            edges.append(f"M{x + size:.2f} {y:.2f}V{y + size:.2f}")
-        if cells.get((col, row + 1)) != state:
-            edges.append(f"M{x:.2f} {y:.2f}H{x + size:.2f}")
-        if cells.get((col, row - 1)) != state:
-            edges.append(f"M{x:.2f} {y + size:.2f}H{x + size:.2f}")
-    out.append(f'<path d="{"".join(edges)}" fill="none" stroke="{INK}" stroke-width="{border}" stroke-linecap="square"/>')
-    return "".join(out)
-
-
-def largest_rectangle(cells):
-    """Largest, squarest rectangle inside a state: (col, row, width, height)."""
-    best = (0, 0, 0, 0, 0)
-    for col, row in sorted(cells):
-        for height in range(1, 16):
-            if (col, row + height - 1) not in cells:
-                break
-            width = 1
-            while all((col + width, row + k) in cells for k in range(height)):
-                width += 1
-            score = width * height - abs(width - height) * 0.15
-            if score > best[0]:
-                best = (score, col, row, width, height)
-    return best[1:]
-
-
 # THE PAGE
 
 def state_labels(main, data, origin_x, origin_y):
@@ -439,20 +239,20 @@ def state_labels(main, data, origin_x, origin_y):
         conf = LABELS.get(abbr, {})
         if conf.get("out") or conf.get("skip"):
             continue
-        col, row, w, h = conf.get("rect") or largest_rectangle(cells)
+        col, row, w, h = conf.get("rect") or c.largest_rectangle(cells)
         cx = px(col) + w * CELL / 2 + conf.get("dx", 0)
         cy = py(row + h - 1) + h * CELL / 2 + conf.get("dy", 0)
-        fill = scale_color(data[state].per_person)
-        ink = text_color(fill)
-        value = money(data[state].gdp)
+        fill = S.color(data[state].per_person)
+        ink = S.text_color(fill)
+        value = S.money(data[state].gdp)
 
         if abbr in HERO:
             hero = HERO[abbr]
             size = hero["value"]
-            out.append(text(cx, cy - size * 0.62, state, hero["name"], 800, "serif", ink, halo=fill, halo_width=5))
-            out.append(text(cx, cy + size * 0.5, value, size, 900, "serif", ink, halo=fill, halo_width=6))
+            out.append(S.text(cx, cy - size * 0.62, state, hero["name"], 800, "serif", ink, halo=fill, halo_width=5))
+            out.append(S.text(cx, cy + size * 0.5, value, size, 900, "serif", ink, halo=fill, halo_width=6))
             for i, note in enumerate(hero["note"]):
-                out.append(text(cx, cy + size * 0.5 + 17 + i * 14.5, note, 11.5, 600, "sans", ink, halo=fill, halo_width=4))
+                out.append(S.text(cx, cy + size * 0.5 + 17 + i * 14.5, note, 11.5, 600, "sans", ink, halo=fill, halo_width=4))
             continue
 
         v_size, n_size = conf.get("v", 12.5), 9.5
@@ -460,37 +260,37 @@ def state_labels(main, data, origin_x, origin_y):
             value_w = len(value) * v_size * 0.53
             name_w = len(abbr) * n_size * 0.68
             x0 = cx - (name_w + 4 + value_w) / 2
-            out.append(text(x0, cy + n_size * 0.36, abbr, n_size, 600, "sans", ink, "start", halo=fill))
-            out.append(text(x0 + name_w + 4, cy + v_size * 0.34, value, v_size, 700, "num", ink, "start", halo=fill))
+            out.append(S.text(x0, cy + n_size * 0.36, abbr, n_size, 600, "sans", ink, "start", halo=fill))
+            out.append(S.text(x0 + name_w + 4, cy + v_size * 0.34, value, v_size, 700, "num", ink, "start", halo=fill))
         else:
-            out.append(text(cx, cy - v_size * 0.30, abbr, n_size, 600, "sans", ink, halo=fill))
-            out.append(text(cx, cy + v_size * 0.78, value, v_size, 700, "num", ink, halo=fill))
+            out.append(S.text(cx, cy - v_size * 0.30, abbr, n_size, 600, "sans", ink, halo=fill))
+            out.append(S.text(cx, cy + v_size * 0.78, value, v_size, 700, "num", ink, halo=fill))
 
     for abbr, conf in LABELS.items():
         if not conf.get("out"):
             continue
-        value = money(data[STATE[abbr]].gdp)
+        value = S.money(data[STATE[abbr]].gdp)
         x, y = conf["out"]
         col, row = conf["at"]
         tail = f"V{y:.1f}H{x:.1f}" if conf.get("up") else f"L{x:.1f} {y:.1f}"
-        out.append(leader(px(col) + CELL / 2, py(row) + CELL / 2, tail))
+        out.append(S.leader(px(col) + CELL / 2, py(row) + CELL / 2, tail))
         if conf.get("anchor") == "end":
             width = len(value) * 12.5 * 0.54
-            out.append(text(x - 4, y + 4.6, value, 12.5, 700, "num", anchor="end"))
-            out.append(text(x - 4 - width - 5, y + 4.2, abbr, 10.5, 700, "sans", anchor="end"))
+            out.append(S.text(x - 4, y + 4.6, value, 12.5, 700, "num", anchor="end"))
+            out.append(S.text(x - 4 - width - 5, y + 4.2, abbr, 10.5, 700, "sans", anchor="end"))
         else:
-            out.append(text(x + 4, y + 4.2, abbr, 10.5, 700, "sans", anchor="start"))
-            out.append(text(x + 26, y + 4.6, value, 12.5, 700, "num", anchor="start"))
+            out.append(S.text(x + 4, y + 4.2, abbr, 10.5, 700, "sans", anchor="start"))
+            out.append(S.text(x + 26, y + 4.6, value, 12.5, 700, "num", anchor="start"))
     return "".join(out)
 
 
 def header(us_per_person):
     out = [
-        text(24, 122, "The U.S. Economy", 136, 900, "serif", INK, "start", 'letter-spacing="-2.4"'),
-        text(1174, 180, "Sized by 2025 GDP, Not Land", 44, 700, "serif", INK, "end", 'letter-spacing="-.4"'),
+        S.text(24, 122, "The U.S. Economy", 136, 900, "serif", INK, "start", 'letter-spacing="-2.4"'),
+        S.text(1174, 180, "Sized by 2025 GDP, Not Land", 44, 700, "serif", INK, "end", 'letter-spacing="-.4"'),
     ]
     deck_x = 486
-    out.append(lines(deck_x, 214, [
+    out.append(S.lines(deck_x, 214, [
         "Each square is 0.1% of U.S. GDP, about $31 billion.",
         "Eight states produce over half of it, while Alaska,",
         "the largest state by land, earns just two squares.",
@@ -502,12 +302,12 @@ def header(us_per_person):
         f'<defs><linearGradient id="legend">{stops}</linearGradient></defs>'
         f'<rect x="{x}" y="{y}" width="{width}" height="11" rx="2" fill="url(#legend)"/>'
     )
-    out.append(text(x, y - 6, "Color: GDP per person, 2025", 11, 600, "sans", INK, "start"))
-    out.append(text(x - 5, y + 10, "$55K", 11.5, 700, "num", INK, "end"))
-    out.append(text(x + width + 5, y + 10, "$125K", 11.5, 700, "num", INK, "start"))
+    out.append(S.text(x, y - 6, "Color: GDP per person, 2025", 11, 600, "sans", INK, "start"))
+    out.append(S.text(x - 5, y + 10, "$55K", 11.5, 700, "num", INK, "end"))
+    out.append(S.text(x + width + 5, y + 10, "$125K", 11.5, 700, "num", INK, "start"))
     tick = (us_per_person - PC_LOW) / (PC_HIGH - PC_LOW) * width
     out.append(f'<path d="M{x + tick:.1f} {y - 2}V{y + 13}" stroke="{INK}" stroke-width="1.4"/>')
-    out.append(text(x + tick, y + 25, "U.S. $90K", 10, 600, "sans", MUTED))
+    out.append(S.text(x + tick, y + 25, "U.S. $90K", 10, 600, "sans", MUTED))
     return "".join(out)
 
 
@@ -517,7 +317,7 @@ def dc_magnifier(main, data, fill_of):
     angle = math.atan2(cy - start_y, cx - start_x)
     end_x, end_y = cx - radius * math.cos(angle), cy - radius * math.sin(angle)
     out = [
-        leader(start_x, start_y, f"L{end_x:.1f} {end_y:.1f}"),
+        S.leader(start_x, start_y, f"L{end_x:.1f} {end_y:.1f}"),
         f'<circle cx="{cx}" cy="{cy}" r="{radius}" fill="#fff" stroke="{INK}" stroke-width="1.6"/>',
     ]
     dc = {cell: s for cell, s in main.items() if s == "District of Columbia"}
@@ -526,13 +326,13 @@ def dc_magnifier(main, data, fill_of):
     size = 11
     block_w = (max(cols) - min(cols) + 1) * size
     block_h = (max(rows) - min(rows) + 1) * size
-    out.append(draw_squares(
+    out.append(S.squares(
         dc, size, cx - block_w / 2 - min(cols) * size, cy - 6 + block_h / 2 + min(rows) * size,
         fill_of, gap=0.5, border=1.2,
     ))
-    out.append(text(cx, cy - 40, "D.C.", 12, 700))
-    out.append(text(cx, cy + 44, money(data["District of Columbia"].gdp), 21, 900, "serif"))
-    out.append(lines(cx, cy + radius + 18, [
+    out.append(S.text(cx, cy - 40, "D.C.", 12, 700))
+    out.append(S.text(cx, cy + 44, S.money(data["District of Columbia"].gdp), 21, 900, "serif"))
+    out.append(S.lines(cx, cy + radius + 18, [
         "Highest GDP per person:",
         "$278K, or 3x the U.S. average",
     ], 11.5, 14.5, weight=600, anchor="middle"))
@@ -542,11 +342,11 @@ def dc_magnifier(main, data, fill_of):
 def stats():
     x = 906
     return "".join([
-        text(x, 842, "37%", 54, 900, "serif", INK, "start", 'letter-spacing="-1"'),
-        lines(x + 114, 811, ["of U.S. GDP comes from", "four states: California,", "Texas, New York, Florida"], 12.5, 17),
+        S.text(x, 842, "37%", 54, 900, "serif", INK, "start", 'letter-spacing="-1"'),
+        S.lines(x + 114, 811, ["of U.S. GDP comes from", "four states: California,", "Texas, New York, Florida"], 12.5, 17),
         f'<path d="M{x} 866H1174" stroke="{INK}" stroke-width=".8"/>',
-        text(x, 920, "$4.3T", 46, 900, "serif", INK, "start", 'letter-spacing="-.6"'),
-        lines(x + 132, 889, ["California out-produces", "the 24 smallest states", "plus D.C. combined"], 12.5, 17),
+        S.text(x, 920, "$4.3T", 46, 900, "serif", INK, "start", 'letter-spacing="-.6"'),
+        S.lines(x + 132, 889, ["California out-produces", "the 24 smallest states", "plus D.C. combined"], 12.5, 17),
     ])
 
 
@@ -556,13 +356,13 @@ def alaska_and_hawaii(data, fill_of):
     alaska = {(0, 0): "Alaska", (0, 1): "Alaska"}
     hawaii = {(0, i): "Hawaii" for i in range(4)}
     out = [
-        draw_squares(alaska, CELL, x, y + 2 * CELL, fill_of),
-        text(x + CELL + 8, y + 13, "Alaska", 11.5, 700, "sans", INK, "start"),
-        text(x + CELL + 8, y + 31, money(data["Alaska"].gdp), 15, 700, "num", INK, "start"),
-        draw_squares(hawaii, CELL, x + 108, y + 4 * CELL, fill_of),
-        text(x + 108 + CELL + 8, y + 13, "Hawaii", 11.5, 700, "sans", INK, "start"),
-        text(x + 108 + CELL + 8, y + 31, money(data["Hawaii"].gdp), 15, 700, "num", INK, "start"),
-        lines(44, 812, ["Alaska has 16% of", "U.S. land, but only", "0.2% of its GDP"], 22, 27, weight=800, family="serif"),
+        S.squares(alaska, CELL, x, y + 2 * CELL, fill_of),
+        S.text(x + CELL + 8, y + 13, "Alaska", 11.5, 700, "sans", INK, "start"),
+        S.text(x + CELL + 8, y + 31, S.money(data["Alaska"].gdp), 15, 700, "num", INK, "start"),
+        S.squares(hawaii, CELL, x + 108, y + 4 * CELL, fill_of),
+        S.text(x + 108 + CELL + 8, y + 13, "Hawaii", 11.5, 700, "sans", INK, "start"),
+        S.text(x + 108 + CELL + 8, y + 31, S.money(data["Hawaii"].gdp), 15, 700, "num", INK, "start"),
+        S.lines(44, 812, ["Alaska has 16% of", "U.S. land, but only", "0.2% of its GDP"], 22, 27, weight=800, family="serif"),
         f'<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">'
         f'<path d="M0 0L10 5L0 10" fill="none" stroke="{INK}" stroke-width="1.6"/></marker></defs>'
         f'<path d="M150 884C170 930 240 948 332 934" fill="none" stroke="{INK}" stroke-width="1.4" marker-end="url(#arrow)"/>',
@@ -581,7 +381,7 @@ def land_inset(grids, fill_of):
                 land[(col + 36, round(row / 3) - 16)] = state
             else:
                 land[(col, row)] = state
-    return draw_squares(land, 5.4, 642, 948, fill_of, gap=0, radius=0, border=0.75, tint=0) + text(
+    return S.squares(land, 5.4, 642, 948, fill_of, gap=0, radius=0, border=0.75, tint=0) + S.text(
         345, 846, "The Same States, Sized by Land", 18, 800, "serif", INK, "start"
     )
 
@@ -589,18 +389,18 @@ def land_inset(grids, fill_of):
 def footer():
     return "".join([
         f'<path d="M26 1066H1174" stroke="{INK}" stroke-width="1"/>',
-        lines(26, 1086, [
+        S.lines(26, 1086, [
             "Source: U.S. Bureau of Economic Analysis (2025 GDP by state, current dollars); U.S. Census Bureau (Vintage 2025 population; land area);",
             "IMF World Economic Outlook (2025 GDP by country, current dollars). Squares are whole-number shares (largest remainder method) of the combined",
             "GDP of the 50 states and D.C., $30.7T. D.C. is shown at the top of the color scale.",
         ], 10.5, 14.5, weight=400, fill=MUTED),
-        lines(1174, 1086, ["Josep Ferrer", "databites.tech", "Grid built with popgrid"], 11, 14.5, weight=600, anchor="end"),
+        S.lines(1174, 1086, ["Josep Ferrer", "databites.tech", "Grid built with popgrid"], 11, 14.5, weight=600, anchor="end"),
     ])
 
 
 def build_page(states, grids, font_css):
     data = {r.state: r for r in states.itertuples()}
-    fill_of = lambda state: scale_color(data[state].per_person)
+    fill_of = lambda state: S.color(data[state].per_person)
     us_per_person = states.gdp.sum() / states["pop"].sum()
 
     main = {(col, row): state for state, col, row in grids["gdp"][0]}
@@ -609,7 +409,7 @@ def build_page(states, grids, font_css):
 
     svg = "".join([
         header(us_per_person),
-        draw_squares(main, CELL, origin_x, origin_y, fill_of),
+        S.squares(main, CELL, origin_x, origin_y, fill_of),
         state_labels(main, data, origin_x, origin_y),
         dc_magnifier(main, data, fill_of),
         stats(),
@@ -625,58 +425,13 @@ def build_page(states, grids, font_css):
     )
 
 
-def find_chrome():
-    """Locate an installed Chrome, Chromium or Edge."""
-    if os.environ.get("CHROME"):
-        return os.environ["CHROME"]
-    for name in ("google-chrome", "google-chrome-stable", "chromium", "chromium-browser", "chrome", "msedge"):
-        if shutil.which(name):
-            return shutil.which(name)
-    for path in (
-        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-        "/Applications/Chromium.app/Contents/MacOS/Chromium",
-        "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
-        r"C:\Program Files\Google\Chrome\Application\chrome.exe",
-        r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
-        r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
-    ):
-        if Path(path).exists():
-            return path
-    raise SystemExit("Chrome not found. Install it, or set the CHROME variable to its path.")
-
-
-def screenshot(page_html, out, scale):
-    """Open the page in headless Chrome and save it as a PNG."""
-    page_path = CACHE / "map.html"
-    page_path.write_text(page_html, encoding="utf-8")
-    out = Path(out).resolve()
-    command = [
-        find_chrome(), "--headless", "--disable-gpu", "--hide-scrollbars",
-        f"--window-size={WIDTH},{HEIGHT}", f"--force-device-scale-factor={scale}",
-        "--virtual-time-budget=5000", f"--screenshot={out}", page_path.as_uri(),
-    ]
-    if hasattr(os, "geteuid") and os.geteuid() == 0:  # Chrome refuses to run sandboxed as root
-        command.insert(1, "--no-sandbox")
-    subprocess.run(command, check=True, capture_output=True)
-
-
-def main():
-    parser = argparse.ArgumentParser(description=__doc__.split("\n")[1])
-    parser.add_argument("--out", default=str(HERE / "us-economy-by-gdp.png"))
-    parser.add_argument("--scale", type=float, default=2, help="pixel density; 2 gives 2400 x 2320")
-    parser.add_argument("--skip-checks", action="store_true")
-    parser.add_argument("--refresh", action="store_true", help="download current BEA, Census and IMF figures")
-    args = parser.parse_args()
-
-    CACHE.mkdir(exist_ok=True)
+def run(args):
     states = load_states(args.refresh)
     grids = build_grids(states)
     if not args.skip_checks:
         check_claims(states, grids, args.refresh)
-    page_html = build_page(states, grids, fetch_fonts())
-    screenshot(page_html, args.out, args.scale)
-    print(f"Saved {args.out}")
+    return build_page(states, grids, c.fetch_fonts()), WIDTH, HEIGHT
 
 
 if __name__ == "__main__":
-    main()
+    c.cli(__doc__.split("\n")[1], HERE / "us-economy-by-gdp.png", run)
