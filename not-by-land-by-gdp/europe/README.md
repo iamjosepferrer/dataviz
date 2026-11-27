@@ -13,6 +13,8 @@ The squares come from [popgrid](https://github.com/databites-tech/popgrid).
 - Natural Earth files Crimea and Sevastopol under Russia. The script moves them to Ukraine.
 - popgrid 0.7.1 gave Bosnia no square and North Macedonia one too many, so the script moves that square.
 
+Shared drawing code lives in [`../common.py`](../common.py).
+
 ## Run it
 
 Needs Python and an installed Chrome, Chromium or Edge, which renders the PNG.
