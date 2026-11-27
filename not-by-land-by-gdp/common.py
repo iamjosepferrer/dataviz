@@ -46,8 +46,14 @@ def fetch(name, url, folder=None, timeout=180):
     path = folder / name
     if not path.exists():
         print(f"Downloading {name}")
-        response = requests.get(url, timeout=timeout)
-        response.raise_for_status()
+        for attempt in range(3):  # some statistics servers drop the first connection
+            try:
+                response = requests.get(url, timeout=timeout)
+                response.raise_for_status()
+                break
+            except requests.exceptions.ConnectionError:
+                if attempt == 2:
+                    raise
         path.write_bytes(response.content)
     return path
 

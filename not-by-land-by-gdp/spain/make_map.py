@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Spain's Economy, Sized by 2024 GDP, Not Land
+Spain's Economy, Sized by 2025 GDP, Not Land
 Josep Ferrer, databites.tech
 
 Tiled map of Spain's 17 autonomous communities and the cities of Ceuta and Melilla,
@@ -9,11 +9,13 @@ shows GDP, color shows GDP per person.
 
 Run:
     python make_map.py               # rebuilds spain-economy-by-gdp.png from the snapshot
-    python make_map.py --refresh     # downloads current Eurostat and IMF figures first
+    python make_map.py --refresh     # downloads current INE, Eurostat and IMF figures first
 
 Data, committed so the published map stays reproducible:
-    data.csv       Eurostat GDP (nama_10r_2gdp), population (nama_10r_3popgdp), land area (reg_area3)
-    imf_2024.csv   IMF GDP by country in U.S. dollars (checks the comparisons)
+    data.csv       INE Regional Accounts: GDP at current prices and population (2025 provisional,
+                   published 30 September 2026, to be revised in December 2026);
+                   Eurostat land area (reg_area3)
+    imf_2025.csv   IMF GDP by country in U.S. dollars (checks the comparisons)
 """
 
 import sys
@@ -26,32 +28,36 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 import common  # noqa: E402
 
-YEAR = 2024
-USD_PER_EUR = 1.08238046875   # ECB reference rate, 2024 annual average
+YEAR = 2025
+USD_PER_EUR = 1.129983   # ECB reference rate, 2025 annual average
+INE_TABLES = {   # INE Regional Accounts (CRE) tables in the Tempus API
+    "gdp": "https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/82284?nult=3",   # GDP, current prices, thousand euros
+    "pop": "https://servicios.ine.es/wstempus/js/ES/DATOS_TABLA/80113?nult=3",   # population, thousands
+}
 DATA_CSV = HERE / "data.csv"
 IMF_CSV = HERE / f"imf_{YEAR}.csv"
 
-# NUTS 2 code -> (Natural Earth region in popgrid, name on the graphic, short label)
+# NUTS 2 code -> (Natural Earth region in popgrid, name on the graphic, short label, name at INE)
 REGIONS = {
-    "ES11": ("Galicia", "Galicia", "Galicia"),
-    "ES12": ("Asturias", "Asturias", "Asturias"),
-    "ES13": ("Cantabria", "Cantabria", "Cantabria"),
-    "ES21": ("País Vasco", "Basque Country", "Basque C."),
-    "ES22": ("Foral de Navarra", "Navarre", "Navarre"),
-    "ES23": ("La Rioja", "La Rioja", "La Rioja"),
-    "ES24": ("Aragón", "Aragon", "Aragon"),
-    "ES30": ("Madrid", "Madrid", "Madrid"),
-    "ES41": ("Castilla y León", "Castile and León", "Castile and León"),
-    "ES42": ("Castilla-La Mancha", "Castile-La Mancha", "Castile-La Mancha"),
-    "ES43": ("Extremadura", "Extremadura", "Extremadura"),
-    "ES51": ("Cataluña", "Catalonia", "Catalonia"),
-    "ES52": ("Valenciana", "Valencia", "Valencia"),
-    "ES53": ("Islas Baleares", "Balearic Islands", "Balearics"),
-    "ES61": ("Andalucía", "Andalusia", "Andalusia"),
-    "ES62": ("Murcia", "Murcia", "Murcia"),
-    "ES63": ("Ceuta", "Ceuta", "Ceuta"),
-    "ES64": ("Melilla", "Melilla", "Melilla"),
-    "ES70": ("Canary Is.", "Canary Islands", "Canaries"),
+    "ES11": ("Galicia", "Galicia", "Galicia", "Galicia"),
+    "ES12": ("Asturias", "Asturias", "Asturias", "Asturias, Principado de"),
+    "ES13": ("Cantabria", "Cantabria", "Cantabria", "Cantabria"),
+    "ES21": ("País Vasco", "Basque Country", "Basque C.", "País Vasco"),
+    "ES22": ("Foral de Navarra", "Navarre", "Navarre", "Navarra, Comunidad Foral de"),
+    "ES23": ("La Rioja", "La Rioja", "La Rioja", "Rioja, La"),
+    "ES24": ("Aragón", "Aragon", "Aragon", "Aragón"),
+    "ES30": ("Madrid", "Madrid", "Madrid", "Madrid, Comunidad de"),
+    "ES41": ("Castilla y León", "Castile and León", "Castile and León", "Castilla y León"),
+    "ES42": ("Castilla-La Mancha", "Castile-La Mancha", "Castile-La Mancha", "Castilla - La Mancha"),
+    "ES43": ("Extremadura", "Extremadura", "Extremadura", "Extremadura"),
+    "ES51": ("Cataluña", "Catalonia", "Catalonia", "Cataluña"),
+    "ES52": ("Valenciana", "Valencia", "Valencia", "Comunitat Valenciana"),
+    "ES53": ("Islas Baleares", "Balearic Islands", "Balearics", "Balears, Illes"),
+    "ES61": ("Andalucía", "Andalusia", "Andalusia", "Andalucía"),
+    "ES62": ("Murcia", "Murcia", "Murcia", "Murcia, Región de"),
+    "ES63": ("Ceuta", "Ceuta", "Ceuta", "Ceuta"),
+    "ES64": ("Melilla", "Melilla", "Melilla", "Melilla"),
+    "ES70": ("Canary Is.", "Canary Islands", "Canaries", "Canarias"),
 }
 
 
@@ -60,14 +66,25 @@ REGIONS = {
 def load_regions(refresh=False):
     """GDP in euros, population and land area for the 19 regions."""
     if not DATA_CSV.exists() or refresh:
-        gdp, _ = common.eurostat("nama_10r_2gdp", unit="MIO_EUR", time=YEAR)
-        pop, _ = common.eurostat("nama_10r_3popgdp", unit="THS", time=YEAR)
+        import json
+
+        def ine(kind):
+            """{INE region name: value for YEAR} from the 'Dato base' series of an INE table."""
+            series = json.loads(common.fetch(f"ine_{kind}_{YEAR}.json", INE_TABLES[kind]).read_text())
+            out = {}
+            for item in series:
+                name, _, rest = item["Nombre"].partition(". Dato base")
+                if rest:
+                    out[name] = next((x["Valor"] for x in item["Data"] if x["Anyo"] == YEAR), None)
+            return out
+
+        gdp, pop = ine("gdp"), ine("pop")
         area, _ = common.eurostat("reg_area3", unit="KM2", landuse="L0008")
         rows = []
-        for code, (shape, name, label) in REGIONS.items():
+        for code, (shape, name, label, ine_name) in REGIONS.items():
             land = [v for v in area[code].values() if v is not None][-1]
             rows.append(dict(code=code, shape=shape, name=name, label=label,
-                             gdp=round(gdp[code][str(YEAR)] * 1e6), pop=round(pop[code][str(YEAR)] * 1e3), land_km2=land))
+                             gdp=round(gdp[ine_name] * 1e3), pop=round(pop[ine_name] * 1e3), land_km2=land))
         pd.DataFrame(rows).to_csv(DATA_CSV, index=False)
     table = pd.read_csv(DATA_CSV)
     table["gdp"] = table.gdp.astype(float)
@@ -106,11 +123,11 @@ def facts(regions, grids, refresh=False):
     biggest = regions.loc[regions.land_km2.idxmax()]
     richest = regions.loc[regions.per_person.idxmax()]
     exclude = {"ESP"}
-    heroes = {}
-    for row in regions.iloc[:4].itertuples():
-        codes = common.bigger_than(row.gdp, imf, exclude)
-        if len(" or ".join(common.COMPARE_NAMES[c] for c in codes)) > 22:  # keep the note to two short lines
-            codes = codes[:1]
+    heroes, used = {}, set()
+    for row in regions.iloc[:4].itertuples():   # the closest European economy below, no repeats
+        codes = common.bigger_than(row.gdp, imf, exclude, k=4, pool=common.EUROPE)
+        codes = [c for c in codes if c not in used][:1]
+        used.update(codes)
         heroes[row.code] = codes
     return dict(
         total=total, square=total / 1000, squares=squares, imf=imf, average=average, half=half,
@@ -131,6 +148,7 @@ def check_claims(regions, grids, F):
             abs(F["squares"][x.code] - x.share * 1000) < 1 for x in regions.itertuples()),
         "every region gets a square": all(F["squares"][code] > 0 for code in regions.code),
         "comparisons hold": all(r.gdp[code] > imf[c] for code, cs in F["heroes"].items() for c in cs),
+        "every hero has a comparison": all(F["heroes"].values()),
         "colour scale covers every region": regions.per_person.min() >= PC_LOW and regions.per_person.max() <= PC_HIGH,
         "Madrid and Catalonia are the top two": set(F["top"].code) == {"ES30", "ES51"},
         "Castile and León is largest by land": F["biggest"].code == "ES41",
@@ -177,9 +195,9 @@ def text_for(regions, F):
             dict(big=money1(lead.gdp), note=[f"{lead['name']} out-produces", f"the {F['beaten']} smallest regions", "combined"], gap=200),
         ],
         footer=[
-            f"Source: Eurostat (GDP at current market prices, nama_10r_2gdp; average population, nama_10r_3popgdp; land area, reg_area3), {YEAR};",
-            f"IMF World Economic Outlook ({YEAR} GDP by country, converted at the ECB’s {YEAR} average of ${USD_PER_EUR:.2f} per euro). Squares are whole-number shares",
-            f"(largest remainder method) of the GDP of the 19 regions, {money1(F['total'])}. Extra-regional GDP is left out. “Bigger than” compares nominal {YEAR} GDP.",
+            f"Source: INE, Spanish Regional Accounts (GDP at current prices and population, {YEAR} provisional, published September 2026); Eurostat (land area,",
+            f"reg_area3); IMF World Economic Outlook ({YEAR} GDP by country, converted at the ECB\u2019s {YEAR} average of ${USD_PER_EUR:.2f} per euro). Squares are whole-number",
+            f"shares (largest remainder method) of the GDP of the 19 regions, {money1(F['total'])}. Extra-regional GDP is left out. \u201cBigger than\u201d compares nominal {YEAR} GDP.",
         ],
     )
 
@@ -201,12 +219,12 @@ P = dict(
     header=dict(dek=(600, 214), legend=(634, 300, 200)),
     map=dict(cell=CELL, x=MAP_X, y=MAP_Y, pack={"ES70": (-24, -25, 1)}),
     labels={
-        "ES42": dict(at=(-16, -8), out=(X(-16) - 12, Y(-8) + 8.5), anchor="end"),
+        "ES42": dict(at=(-13, -11), out=(X(-15) - 8, Y(-11) + 8.5), anchor="end"),
         "ES63": dict(at=(-9, -24), out=(X(-6), Y(-24) + 8.5)),
         "ES64": dict(at=(2, -27), out=(X(5), Y(-27) + 8.5)),
     },
     hero={"ES30": dict(name=21, value=32), "ES51": dict(name=21, value=32),
-          "ES61": dict(name=18, value=26), "ES52": dict(name=16, value=22, dx=44, dy=40)},
+          "ES61": dict(name=18, value=26), "ES52": dict(name=17, value=24, dx=22)},
     inset=dict(x=930, y=880, cell=5, title=(1174, 858, "end"), note=(700, 905),
                highlight="ES41", pack={"ES70": (-15, -28, 1)}),
     band=dict(y=1180),

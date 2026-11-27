@@ -1,14 +1,15 @@
-# Spain's Economy, Sized by 2024 GDP, Not Land
+# Spain's Economy, Sized by 2025 GDP, Not Land
 
-![Spain's Economy, Sized by 2024 GDP, Not Land](spain-economy-by-gdp.png)
+![Spain's Economy, Sized by 2025 GDP, Not Land](spain-economy-by-gdp.png)
 
-A tiled map of Spain's 17 autonomous communities and the cities of Ceuta and Melilla, with 1,000 squares, each one 0.1% of their combined GDP (about €1.6 billion). Square count shows GDP, color shows GDP per person. A small land map of the same regions sits alongside for contrast. Amounts are in euros.
+A tiled map of Spain's 17 autonomous communities and the cities of Ceuta and Melilla, with 1,000 squares, each one 0.1% of their combined GDP (about €1.7 billion). Square count shows GDP, color shows GDP per person. A small land map of the same regions sits alongside for contrast. Amounts are in euros.
 
 The squares come from [popgrid](https://github.com/databites-tech/popgrid). Shared drawing code lives in [`../common.py`](../common.py).
 
 ## Scope
 
-- Extra-regional GDP (Eurostat's ESZZ) is left out.
+- 2025 figures are INE's first estimate (published 30 September 2026). INE revises them in December 2026; rerun with `--refresh` then.
+- Extra-regional GDP is left out.
 - The Canary Islands are moved next to the peninsula, with their islands side by side.
 
 ## Run it
@@ -25,8 +26,9 @@ The script checks every claim on the graphic against the data and stops if one n
 
 ## Sources
 
-- [Eurostat](https://ec.europa.eu/eurostat/databrowser/view/nama_10r_2gdp/default/table): GDP at current market prices by NUTS 2 region (nama_10r_2gdp), average population (nama_10r_3popgdp) and land area (reg_area3), 2024
-- [IMF World Economic Outlook](https://www.imf.org/en/publications/weo): 2024 GDP by country, for the comparisons
-- [ECB](https://data.ecb.europa.eu/): 2024 average euro reference rate
+- [INE, Spanish Regional Accounts](https://www.ine.es/dyngs/Prensa/en/avCRE2025.htm): GDP at current prices and population by autonomous community, 2025 (tables 82284 and 80113)
+- [Eurostat](https://ec.europa.eu/eurostat/databrowser/view/reg_area3/default/table): land area (reg_area3)
+- [IMF World Economic Outlook](https://www.imf.org/en/publications/weo): 2025 GDP by country, for the comparisons
+- [ECB](https://data.ecb.europa.eu/): 2025 average euro reference rate
 
-Snapshots of the figures are in `data.csv` and the `imf_*.csv` file.
+Snapshots of the figures are in `data.csv` and `imf_2025.csv`.

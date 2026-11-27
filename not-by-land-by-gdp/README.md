@@ -6,7 +6,7 @@ Tiled maps that size each region by its GDP instead of its land, built with [pop
 |---|---|
 | [![The U.S. Economy](usa/us-economy-by-gdp.png)](usa) | **[The U.S. Economy](usa)**<br>50 states and D.C., 2025, in dollars. |
 | [![Europe's Economy](europe/europe-economy-by-gdp.png)](europe) | **[Europe's Economy](europe)**<br>40 European countries, 2025. |
-| [![Spain's Economy](spain/spain-economy-by-gdp.png)](spain) | **[Spain's Economy](spain)**<br>17 autonomous communities, Ceuta and Melilla, 2024. |
+| [![Spain's Economy](spain/spain-economy-by-gdp.png)](spain) | **[Spain's Economy](spain)**<br>17 autonomous communities, Ceuta and Melilla, 2025. |
 | [![Catalonia's Economy](catalonia/catalonia-economy-by-gdp.png)](catalonia) | **[Catalonia's Economy](catalonia)**<br>42 comarques and Aran, 2023. |
 | [![The Netherlands' Economy](netherlands/netherlands-economy-by-gdp.png)](netherlands) | **[The Netherlands' Economy](netherlands)**<br>12 provinces, 2024. |
 | [![Mainland China's Economy](china/china-economy-by-gdp.png)](china) | **[Mainland China's Economy](china)**<br>31 provinces, 2024. |
