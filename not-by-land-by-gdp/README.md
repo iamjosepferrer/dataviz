@@ -2,11 +2,14 @@
 
 Tiled maps that size each region by its GDP instead of its land, built with [popgrid](https://github.com/databites-tech/popgrid). Every square is 0.1% of the area's GDP, color shows GDP per person, and a small land map sits alongside for contrast.
 
+One spin-off uses the same grid for votes: [Spain's Congress](spain-seats) gives each province one square per seat.
+
 | | |
 |---|---|
 | [![The U.S. Economy](usa/us-economy-by-gdp.png)](usa) | **[The U.S. Economy](usa)**<br>50 states and D.C., 2025, in dollars. |
 | [![Europe's Economy](europe/europe-economy-by-gdp.png)](europe) | **[Europe's Economy](europe)**<br>40 European countries, 2025. |
 | [![Spain's Economy](spain/spain-economy-by-gdp.png)](spain) | **[Spain's Economy](spain)**<br>17 autonomous communities, Ceuta and Melilla, 2025. |
+| [![Spain's Congress](spain-seats/spain-seats-2026.png)](spain-seats) | **[Spain's Congress](spain-seats)**<br>52 constituencies, one square per seat, general election of 29 November 2026. |
 | [![Catalonia's Economy](catalonia/catalonia-economy-by-gdp.png)](catalonia) | **[Catalonia's Economy](catalonia)**<br>42 comarques and Aran, 2023. |
 | [![The Netherlands' Economy](netherlands/netherlands-economy-by-gdp.png)](netherlands) | **[The Netherlands' Economy](netherlands)**<br>12 provinces, 2024. |
 | [![Mainland China's Economy](china/china-economy-by-gdp.png)](china) | **[Mainland China's Economy](china)**<br>31 provinces, 2024. |
@@ -26,3 +29,5 @@ To add a country, copy the folder closest to it: `netherlands` for a European co
 pip install -r requirements.txt
 cd spain && python make_map.py
 ```
+
+The two Spain posters also come in Spanish: add `--lang es` (output ends in `-es.png`).

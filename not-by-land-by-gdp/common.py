@@ -506,7 +506,10 @@ def cli(description, default_out, run):
     parser.add_argument("--skip-checks", action="store_true")
     parser.add_argument("--refresh", action="store_true", help="download current figures first")
     parser.add_argument("--html", help="also save the page as HTML here (for checks)")
+    parser.add_argument("--lang", default="en", choices=["en", "es"], help="language of the poster's text")
     args = parser.parse_args()
+    if args.lang != "en" and args.out == str(default_out):   # spain-economy-by-gdp-es.png
+        args.out = str(Path(default_out).with_name(f"{Path(default_out).stem}-{args.lang}{Path(default_out).suffix}"))
     CACHE.mkdir(parents=True, exist_ok=True)
     page_html, width, height = run(args)
     if args.html:
@@ -658,7 +661,7 @@ class GridPoster:
             S.text(P["width"] - 26, h.get("subtitle_y", 180), T["subtitle"], 44, 700, "serif", S.ink, "end", 'letter-spacing="-.4"'),
         ]
         x, y = h["dek"]
-        out.append(S.lines(x, y, T["dek"], h.get("dek_size", 14), h.get("dek_leading", 19.5)))
+        out.append(S.lines(x, y, T["dek"], h.get("dek_size", 14), h.get("dek_leading", 19.5), anchor=h.get("dek_anchor", "start")))
         lx, ly, lw = h["legend"]
         out.append(S.legend(lx, ly, lw, T["legend_title"], T["legend_low"], T["legend_high"],
                             T["legend_mean"], None if S.mid is not None else T["mean_value"]))
@@ -764,7 +767,8 @@ class GridPoster:
         tx, ty, anchor = ins["title"]
         out.append(S.text(tx, ty, self.T["inset_title"], 17, 800, "serif", S.ink, anchor))
         nx, ny = ins["note"]
-        out.append(S.lines(nx, ny, self.T["note"], ins.get("note_size", 17), ins.get("note_leading", 22.5), weight=800, family="serif"))
+        out.append(S.lines(nx, ny, self.T["note"], ins.get("note_size", 17), ins.get("note_leading", 22.5), weight=800, family="serif",
+                           anchor=ins.get("note_anchor", "start")))
         if ins.get("arrow_from") and key:
             (sx, sy), (tx, ty) = ins["arrow_from"], self.highlight_xy
             bend = ins.get("arrow_bend", 0.25)
@@ -810,9 +814,27 @@ class GridPoster:
             self.land_inset(),
             self.bottom_band(),
             self.extra(),
-            self.S.footer(P["footer_y"], self.T["footer"], P["width"]),
+            self.S.footer(P["footer_y"], self.T["footer"], P["width"], **({"credit": self.T["credit"]} if "credit" in self.T else {})),
         ])
         return page(svg, font_css, P["width"], P["height"])
+
+
+# Spanish names for the comparisons, and Spanish number formatting
+COMPARE_NAMES_ES = {
+    "ALB": "Albania", "AUT": "Austria", "BEL": "Bélgica", "BGR": "Bulgaria", "BIH": "Bosnia y Herzegovina",
+    "CHE": "Suiza", "CYP": "Chipre", "CZE": "Chequia", "DEU": "Alemania", "DNK": "Dinamarca", "ESP": "España",
+    "EST": "Estonia", "FIN": "Finlandia", "FRA": "Francia", "GBR": "el Reino Unido", "GRC": "Grecia",
+    "HRV": "Croacia", "HUN": "Hungría", "IRL": "Irlanda", "ISL": "Islandia", "ITA": "Italia", "LTU": "Lituania",
+    "LUX": "Luxemburgo", "LVA": "Letonia", "MDA": "Moldavia", "MKD": "Macedonia del Norte", "MLT": "Malta",
+    "MNE": "Montenegro", "NLD": "los Países Bajos", "NOR": "Noruega", "POL": "Polonia", "PRT": "Portugal",
+    "ROU": "Rumanía", "SRB": "Serbia", "SVK": "Eslovaquia", "SVN": "Eslovenia", "SWE": "Suecia", "UKR": "Ucrania",
+}
+
+
+def es_num(value, decimals=0):
+    """1234567.8 -> '1.234.568'; 1.62 with decimals=1 -> '1,6'."""
+    text = f"{value:,.{decimals}f}"
+    return text.replace(",", "\x00").replace(".", ",").replace("\x00", ".")
 
 
 def wrap_note(content, width=24):

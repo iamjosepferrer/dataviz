@@ -165,7 +165,9 @@ PC_LOW, PC_HIGH = 20_000, 50_000
 S = common.Style(INK, MUTED, "spain", PC_LOW, PC_HIGH, currency="€")
 
 
-def text_for(regions, F):
+def text_for(regions, F, lang="en"):
+    if lang == "es":
+        return text_es(regions, F)
     S_ = S
     money1 = lambda v: f"€{v / 1e12:.2f}T" if v >= 1e12 else f"€{v / 1e9:.0f}B"
     lead = F["leader"]
@@ -202,6 +204,63 @@ def text_for(regions, F):
     )
 
 
+ES_NAMES = {   # code: (name, label) in Spanish
+    "ES21": ("País Vasco", "País Vasco"), "ES22": ("Navarra", "Navarra"), "ES24": ("Aragón", "Aragón"),
+    "ES41": ("Castilla y León", "Castilla y León"), "ES42": ("Castilla-La Mancha", "Castilla-La Mancha"),
+    "ES51": ("Cataluña", "Cataluña"), "ES52": ("C. Valenciana", "C. Valenciana"), "ES53": ("Islas Baleares", "Baleares"),
+    "ES61": ("Andalucía", "Andalucía"), "ES70": ("Canarias", "Canarias"),
+}
+
+
+class SpanishStyle(common.Style):
+    def money(self, value):   # 440 mil M€ (mil millones), rounded like the English €440B
+        if value >= 1e9:
+            return f"{common.es_num(value / 1e9)} mil M€"
+        return f"{common.es_num(value / 1e6)} M€"
+
+
+S_ES = SpanishStyle(INK, MUTED, "spain", PC_LOW, PC_HIGH, currency="€")
+
+
+def text_es(regions, F):
+    n = common.es_num
+    lead = F["leader"]
+    names = dict(zip(regions.code, regions.name))
+    biggest = names["ES41"]
+    return dict(
+        title="La economía española",
+        subtitle=f"Por PIB de {YEAR}, no por superficie",
+        dek=[
+            f"Cada cuadrado es el 0,1% del PIB de España, unos {n(round(F['square'] / 1e8) * 100)} millones",
+            f"de euros. Madrid y Cataluña generan el {F['top_share'] * 100:.0f}%, mientras que",
+            f"{biggest}, la mayor comunidad por superficie, solo",
+            f"suma {F['biggest_squares']} cuadrados.",
+        ],
+        legend_title=f"Color: PIB por habitante, {YEAR}",
+        legend_low=f"{n(PC_LOW)} €", legend_high=f"{n(PC_HIGH)} €",
+        legend_mean=f"España {n(round(F['average'], -3))} €", mean_value=F["average"],
+        hero_notes={code: common.wrap_note("Mayor que " + " o ".join(common.COMPARE_NAMES_ES[c] for c in cs))
+                    for code, cs in F["heroes"].items()},
+        magnifier=[],
+        inset_title="Las mismas comunidades, según su superficie",
+        note=[
+            f"{biggest} tiene el",
+            f"{F['biggest_land'] * 100:.0f}% del territorio de España,",
+            f"pero solo el {n(F['biggest_gdp'] * 100, 1)}% de su PIB",
+        ],
+        stats=[
+            dict(big=f"{F['top_share'] * 100:.0f}%", note=["del PIB de España sale de", "dos comunidades: Madrid", "y Cataluña"]),
+            dict(big=f"{n(lead.gdp / 1e9)} mil M€", note=[f"{names[lead.code]} produce más", f"que las {F['beaten']} comunidades", "más pequeñas juntas"], gap=330),
+        ],
+        footer=[
+            f"Fuente: INE, Contabilidad Regional de España (PIB a precios corrientes y población, {YEAR} provisional, publicado en septiembre de 2026); Eurostat",
+            f"(superficie, reg_area3); FMI, World Economic Outlook (PIB de {YEAR} por país, al cambio medio del BCE en {YEAR}, {n(USD_PER_EUR, 2)} dólares por euro). Los cuadrados",
+            f"reparten en números enteros (método del resto mayor) el PIB de las 19 regiones, {n(F['total'] / 1e12, 2)} billones de euros. Se excluye el PIB extrarregional.",
+        ],
+        credit=("Josep Ferrer", "databites.tech", "Cuadrícula hecha con popgrid"),
+    )
+
+
 CELL, MAP_X, MAP_Y, COL0, ROW0 = 17, 60, 338, -24, 15
 
 
@@ -232,10 +291,17 @@ P = dict(
 )
 
 
-def build_page(regions, grids, font_css, F=None):
+def build_page(regions, grids, font_css, F=None, lang="en"):
     F = F or facts(regions, grids)
+    style, P_ = S, P
+    if lang == "es":
+        regions = regions.copy()
+        for code, (name, label) in ES_NAMES.items():
+            regions.loc[regions.code == code, ["name", "label"]] = [name, label]
+        hero = dict(P["hero"], ES52=dict(P["hero"]["ES52"], dx=6))   # longer value, pulled back inside the region
+        style, P_ = S_ES, dict(P, header=dict(P["header"], title_size=112), hero=hero)
     data = {x.code: x for x in regions.itertuples()}
-    return common.GridPoster(S, data, grids, P, text_for(regions, F)).build(font_css)
+    return common.GridPoster(style, data, grids, P_, text_for(regions, F, lang)).build(font_css)
 
 
 def run(args):
@@ -244,7 +310,7 @@ def run(args):
     F = facts(regions, grids, args.refresh)
     if not args.skip_checks:
         check_claims(regions, grids, F)
-    return build_page(regions, grids, common.fetch_fonts(), F), P["width"], P["height"]
+    return build_page(regions, grids, common.fetch_fonts(), F, getattr(args, "lang", "en")), P["width"], P["height"]
 
 
 if __name__ == "__main__":

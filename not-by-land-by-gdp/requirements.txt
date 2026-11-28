@@ -2,3 +2,4 @@ popgrid==0.7.1
 pandas
 requests
 geopandas
+pypdf
